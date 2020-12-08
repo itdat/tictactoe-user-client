@@ -8,6 +8,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Typography,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -32,18 +33,22 @@ const OnlineList = ({ users }) => {
   return (
     <Box className={classes.container}>
       <Box className={classes.content}>
-      {users && users !== '' ? (
-        <List component="nav">
-          {users.map(({ name }) => (
-            <ListItem button key={name}>
-              <ListItemAvatar>
-                <Avatar src={UserPlaceholder} />
-              </ListItemAvatar>
-              <ListItemText primary={name} />
-            </ListItem>
-          ))}
-        </List>
-      ) : null}
+        {users && users !== "" ? (
+          <List component="nav">
+            {users.map(({ name }) => (
+              <ListItem button key={name}>
+                <ListItemAvatar>
+                  <Avatar src={UserPlaceholder} />
+                </ListItemAvatar>
+                <ListItemText primary={name} />
+              </ListItem>
+            ))}
+          </List>
+        ) : (
+          <Box p={2}>
+            <Typography>No one is online yet...</Typography>
+          </Box>
+        )}
       </Box>
       <Box className={classes.toolbarMargin} />
     </Box>
