@@ -24,6 +24,7 @@ import Typography from "@material-ui/core/Typography";
 import Logo from "../images/Logo.svg";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import clsx from "clsx";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -68,6 +69,10 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
   },
+  link: {
+    textDecoration: "none",
+    color: "inherit",
+  },
 }));
 
 function ResponsiveDrawer(props) {
@@ -87,60 +92,76 @@ function ResponsiveDrawer(props) {
       </div>
       <Divider />
       <List>
-        <ListItem button>
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText primary="Home" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <PersonIcon />
-          </ListItemIcon>
-          <ListItemText primary="Profile" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <AssessmentIcon />
-          </ListItemIcon>
-          <ListItemText primary="Rank" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <SupervisorAccountIcon />
-          </ListItemIcon>
-          <ListItemText primary="Online" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <AnnouncementIcon />
-          </ListItemIcon>
-          <ListItemText primary="Guide" />
-        </ListItem>
+        <Link to="/" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
+        </Link>
+        <Link to="/profile" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon>
+              <PersonIcon />
+            </ListItemIcon>
+            <ListItemText primary="Profile" />
+          </ListItem>
+        </Link>
+        <Link to="/rank" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon>
+              <AssessmentIcon />
+            </ListItemIcon>
+            <ListItemText primary="Rank" />
+          </ListItem>
+        </Link>
+        <Link to="/online" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon>
+              <SupervisorAccountIcon />
+            </ListItemIcon>
+            <ListItemText primary="Online" />
+          </ListItem>
+        </Link>
+        <Link to="/guide" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon>
+              <AnnouncementIcon />
+            </ListItemIcon>
+            <ListItemText primary="Guide" />
+          </ListItem>
+        </Link>
       </List>
       <Divider />
       <List>
-        <ListItem button>
-          <ListItemIcon>
-            <AssignmentIndIcon />
-          </ListItemIcon>
-          <ListItemText primary="Login" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <AssignmentIcon />
-          </ListItemIcon>
-          <ListItemText primary="Sign-up" />
-        </ListItem>
+        <Link to="/login" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon>
+              <AssignmentIndIcon />
+            </ListItemIcon>
+            <ListItemText primary="Login" />
+          </ListItem>
+        </Link>
+        <Link to="/sign-up" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon>
+              <AssignmentIcon />
+            </ListItemIcon>
+            <ListItemText primary="Sign-up" />
+          </ListItem>
+        </Link>
       </List>
       <Divider />
       <List>
-        <ListItem button>
-          <ListItemIcon>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          <ListItemText primary="Logout" />
-        </ListItem>
+        <Link to="/logout" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon>
+              <ExitToAppIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItem>
+        </Link>
       </List>
     </div>
   );
