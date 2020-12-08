@@ -26,22 +26,24 @@ const useStyles = makeStyles((theme) => ({
   toolbarMargin: theme.mixins.toolbar,
 }));
 
-const OnlineList = () => {
+const OnlineList = ({ users }) => {
   const classes = useStyles();
 
   return (
     <Box className={classes.container}>
       <Box className={classes.content}>
+      {users && users !== '' ? (
         <List component="nav">
-          {[...Array(100)].map((e, i) => (
-            <ListItem button>
+          {users.map(({ name }) => (
+            <ListItem button key={name}>
               <ListItemAvatar>
                 <Avatar src={UserPlaceholder} />
               </ListItemAvatar>
-              <ListItemText primary={`user ${i + 1}`} />
+              <ListItemText primary={name} />
             </ListItem>
           ))}
         </List>
+      ) : null}
       </Box>
       <Box className={classes.toolbarMargin} />
     </Box>
