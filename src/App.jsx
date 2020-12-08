@@ -5,6 +5,7 @@ import { Grid } from "@material-ui/core";
 
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import Profiles from "./pages/Profiles";
 import Rank from "./pages/Rank";
@@ -64,8 +65,9 @@ const App = (props) => {
             <Grid item lg={10} xs={12} className={classes.content}>
               <Switch>
                 <Route exact path="/" component={Home} />
+                <Route exact path="/join" component={Join} />
                 {/* Authenticate */}
-                <Route exact path="/login" component={Join} />
+                <Route exact path="/login" component={Login} />
                 <Route exact path="/sign-up" component={SignUp} />
                 <Route exact path="/logout" component={Logout} />
                 {/*  */}

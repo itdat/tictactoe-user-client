@@ -11,6 +11,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import HomeIcon from "@material-ui/icons/Home";
+import TelegramIcon from "@material-ui/icons/Telegram";
 import PersonIcon from "@material-ui/icons/Person";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import AssessmentIcon from "@material-ui/icons/Assessment";
@@ -98,6 +99,14 @@ function ResponsiveDrawer(props) {
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Home" />
+          </ListItem>
+        </Link>
+        <Link to="/join" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon>
+              <TelegramIcon />
+            </ListItemIcon>
+            <ListItemText primary="Join" />
           </ListItem>
         </Link>
         <Link to="/profile" className={classes.link}>
