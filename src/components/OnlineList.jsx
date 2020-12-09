@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import io from "socket.io-client";
+import { v4 as uuid } from "uuid";
 
 let socket;
 
@@ -32,7 +33,11 @@ const useStyles = makeStyles((theme) => ({
 
 const OnlineList = () => {
   const classes = useStyles();
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([
+    { user: "ntdat", level: 5 },
+    { user: "ltuyen", level: 6 },
+    { user: "nvhuy", level: 5 },
+  ]);
   const ENDPOINT = "http://localhost:5000/";
   useEffect(() => {
     socket = io(ENDPOINT);
@@ -46,12 +51,12 @@ const OnlineList = () => {
       <Box className={classes.content}>
         {users.length !== 0 ? (
           <List component="nav">
-            {users.map(({ name }) => (
-              <ListItem button key={name}>
+            {users.map(({ user }) => (
+              <ListItem button key={uuid()}>
                 <ListItemAvatar>
                   <Avatar src={UserPlaceholder} />
                 </ListItemAvatar>
-                <ListItemText primary={name} />
+                <ListItemText primary={user} />
               </ListItem>
             ))}
           </List>
