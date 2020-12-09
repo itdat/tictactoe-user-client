@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -14,6 +14,7 @@ import {
 import { Link } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -40,8 +41,42 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login() {
+export default function Login({ history }) {
   const classes = useStyles();
+
+  const [formData, setFormData] = useState({ username: "", password: "" });
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const username = "itdat";
+    const password = "123";
+    const data = {
+      username,
+      password,
+    };
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/auth",
+        data,
+        config
+      );
+      if (res.status === 200) {
+        localStorage.setItem("username", username);
+        history.push("/");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -60,7 +95,9 @@ export default function Login() {
             required
             fullWidth
             id="username"
-            label="Username"
+            label={formData.username === "" ? "Username" : ""}
+            value={formData.username}
+            onChange={handleInputChange}
             name="username"
             autoComplete="username"
             autoFocus
@@ -71,7 +108,9 @@ export default function Login() {
             required
             fullWidth
             name="password"
-            label="Password"
+            label={formData.password === "" ? "Password" : ""}
+            value={formData.password}
+            onChange={handleInputChange}
             type="password"
             id="password"
             autoComplete="current-password"
@@ -86,6 +125,7 @@ export default function Login() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={handleLogin}
           >
             Sign In
           </Button>

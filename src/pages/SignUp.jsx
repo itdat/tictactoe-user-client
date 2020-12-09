@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   CssBaseline,
   Avatar,
@@ -40,8 +40,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function SignUp({ history }) {
   const classes = useStyles();
+
+  const [formData, setFormData] = useState({
+    fullname: "",
+    username: "",
+    password: "",
+  });
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -50,18 +60,24 @@ export default function SignUp() {
         "Content-Type": "application/json",
       },
     };
+    const fullname = formData.fullname;
+    const username = formData.username;
+    const password = formData.password;
     const data = {
-      username: "itdat123",
-      password: "123",
-      password_confirm: "123",
+      fullname,
+      username,
+      password,
     };
     try {
       const res = await axios.post(
-        "http://localhost:5000/users/register",
+        "http://localhost:5000/api/users",
         data,
         config
       );
-      console.log(res);
+      if (res.status === 200) {
+        localStorage.setItem("username", username);
+        history.push("/");
+      }
     } catch (err) {
       console.log(err);
     }
@@ -79,27 +95,17 @@ export default function SignUp() {
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
+                id="fullname"
+                name="fullname"
+                autoComplete="fullname"
+                label={formData.fullname === "" ? "Fullname" : ""}
+                value={formData.fullname}
+                onChange={handleInputChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -107,10 +113,12 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="username"
+                name="username"
+                autoComplete="username"
+                label={formData.username === "" ? "Username" : ""}
+                value={formData.username}
+                onChange={handleInputChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -119,10 +127,12 @@ export default function SignUp() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                label={formData.password === "" ? "Password" : ""}
+                value={formData.password}
+                onChange={handleInputChange}
               />
             </Grid>
             <Grid item xs={12}>
