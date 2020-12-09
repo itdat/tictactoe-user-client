@@ -64,9 +64,10 @@ export default function SignUp({ history }) {
     const username = formData.username;
     const password = formData.password;
     const data = {
-      fullname,
+      name: fullname,
       username,
       password,
+      password_confirm: password
     };
     try {
       const res = await axios.post(
