@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   Avatar,
   Box,
+  Hidden,
   List,
   ListItem,
   ListItemAvatar,
@@ -37,37 +38,74 @@ const OnlineList = () => {
     { user: "ntdat", level: 5 },
     { user: "ltuyen", level: 6 },
     { user: "nvhuy", level: 5 },
+    { user: "ntdat", level: 5 },
+    { user: "ltuyen", level: 6 },
+    { user: "nvhuy", level: 5 },
+    { user: "ntdat", level: 5 },
+    { user: "ltuyen", level: 6 },
+    { user: "nvhuy", level: 5 },
+    { user: "ntdat", level: 5 },
+    { user: "ltuyen", level: 6 },
+    { user: "nvhuy", level: 5 },
+    { user: "ntdat", level: 5 },
+    { user: "ltuyen", level: 6 },
+    { user: "nvhuy", level: 5 },
+    { user: "ntdat", level: 5 },
+    { user: "ltuyen", level: 6 },
+    { user: "nvhuy", level: 5 },
+    { user: "ntdat", level: 5 },
+    { user: "ltuyen", level: 6 },
+    { user: "nvhuy", level: 5 },
+    { user: "ntdat", level: 5 },
+    { user: "ltuyen", level: 6 },
+    { user: "nvhuy", level: 5 },
+    { user: "ntdat", level: 5 },
+    { user: "ltuyen", level: 6 },
+    { user: "nvhuy", level: 5 },
+    { user: "ntdat", level: 5 },
+    { user: "ltuyen", level: 6 },
+    { user: "nvhuy", level: 5 },
+    { user: "ntdat", level: 5 },
+    { user: "ltuyen", level: 6 },
+    { user: "nvhuy", level: 5 },
+    { user: "ntdat", level: 5 },
+    { user: "ltuyen", level: 6 },
+    { user: "nvhuy", level: 5 },
   ]);
   const ENDPOINT = "http://localhost:5000/";
   useEffect(() => {
-    socket = io(ENDPOINT);
+    socket = io(ENDPOINT, {
+      transports: ["websocket", "polling", "flashsocket"],
+    });
     socket.on("roomData", ({ users }) => {
       setUsers(users);
     });
   }, []);
 
   return (
-    <Box className={classes.container}>
-      <Box className={classes.content}>
-        {users.length !== 0 ? (
-          <List component="nav">
-            {users.map(({ user }) => (
-              <ListItem button key={uuid()}>
-                <ListItemAvatar>
-                  <Avatar src={UserPlaceholder} />
-                </ListItemAvatar>
-                <ListItemText primary={user} />
-              </ListItem>
-            ))}
-          </List>
-        ) : (
-          <Box p={2}>
-            <Typography>No one is online yet...</Typography>
-          </Box>
-        )}
+    <Hidden mdDown>
+      <Box className={classes.container}>
+        <Box className={classes.content}>
+          {users.length !== 0 ? (
+            <List component="nav">
+              {users.map(({ user }) => (
+                <ListItem button key={uuid()}>
+                  <ListItemAvatar>
+                    <Avatar src={UserPlaceholder} />
+                  </ListItemAvatar>
+                  <ListItemText primary={user} />
+                </ListItem>
+              ))}
+            </List>
+          ) : (
+            <Box p={2}>
+              <Typography>No one is online yet...</Typography>
+            </Box>
+          )}
+        </Box>
+        <Box className={classes.toolbarMargin} />
       </Box>
-      <Box className={classes.toolbarMargin} />
-    </Box>
+    </Hidden>
   );
 };
 
