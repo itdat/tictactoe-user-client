@@ -32,53 +32,32 @@ const useStyles = makeStyles((theme) => ({
   toolbarMargin: theme.mixins.toolbar,
 }));
 
+// const loadUsername = () => {
+//   try {
+//     const serializedState = localStorage.getItem('username');
+//     console.log('[ loadUsername ]', serializedState);
+//     if (serializedState === null) {
+//       return undefined;
+//     }
+//     return JSON.parse(serializedState);
+//   } catch (e) {
+//     return undefined;
+//   }
+// };
+
 const OnlineList = () => {
   const classes = useStyles();
-  const [users, setUsers] = useState([
-    { user: "ntdat", level: 5 },
-    { user: "ltuyen", level: 6 },
-    { user: "nvhuy", level: 5 },
-    { user: "ntdat", level: 5 },
-    { user: "ltuyen", level: 6 },
-    { user: "nvhuy", level: 5 },
-    { user: "ntdat", level: 5 },
-    { user: "ltuyen", level: 6 },
-    { user: "nvhuy", level: 5 },
-    { user: "ntdat", level: 5 },
-    { user: "ltuyen", level: 6 },
-    { user: "nvhuy", level: 5 },
-    { user: "ntdat", level: 5 },
-    { user: "ltuyen", level: 6 },
-    { user: "nvhuy", level: 5 },
-    { user: "ntdat", level: 5 },
-    { user: "ltuyen", level: 6 },
-    { user: "nvhuy", level: 5 },
-    { user: "ntdat", level: 5 },
-    { user: "ltuyen", level: 6 },
-    { user: "nvhuy", level: 5 },
-    { user: "ntdat", level: 5 },
-    { user: "ltuyen", level: 6 },
-    { user: "nvhuy", level: 5 },
-    { user: "ntdat", level: 5 },
-    { user: "ltuyen", level: 6 },
-    { user: "nvhuy", level: 5 },
-    { user: "ntdat", level: 5 },
-    { user: "ltuyen", level: 6 },
-    { user: "nvhuy", level: 5 },
-    { user: "ntdat", level: 5 },
-    { user: "ltuyen", level: 6 },
-    { user: "nvhuy", level: 5 },
-    { user: "ntdat", level: 5 },
-    { user: "ltuyen", level: 6 },
-    { user: "nvhuy", level: 5 },
-  ]);
-  const ENDPOINT = "http://localhost:5000/";
+  const [users, setUsers] = useState([]);
+
+  const ENDPOINT = "https://tictactoe-user-api.herokuapp.com/";
+  socket = io(ENDPOINT, {
+    transports: ["websocket", "polling", "flashsocket"],
+  });
+  
   useEffect(() => {
-    socket = io(ENDPOINT, {
-      transports: ["websocket", "polling", "flashsocket"],
-    });
     socket.on("roomData", ({ users }) => {
       setUsers(users);
+      // console.log('[ roomData ]', users);
     });
   }, []);
 
@@ -88,12 +67,12 @@ const OnlineList = () => {
         <Box className={classes.content}>
           {users.length !== 0 ? (
             <List component="nav">
-              {users.map(({ user }) => (
+              {users.map(({ name }) => (
                 <ListItem button key={uuid()}>
                   <ListItemAvatar>
                     <Avatar src={UserPlaceholder} />
                   </ListItemAvatar>
-                  <ListItemText primary={user} />
+                  <ListItemText primary={name} />
                 </ListItem>
               ))}
             </List>

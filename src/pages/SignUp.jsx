@@ -70,7 +70,7 @@ export default function SignUp({ history }) {
     };
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/users",
+        "https://tictactoe-user-api.herokuapp.com/users/register",
         data,
         config
       );
