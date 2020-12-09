@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import { Grid } from "@material-ui/core";
@@ -15,10 +15,6 @@ import Guide from "./pages/Guide";
 import OnlineList from "./components/OnlineList";
 import ResponsiveDrawer from "./layout/ResponsiveDrawer";
 import { makeStyles } from "@material-ui/core/styles";
-import { Join } from "./components";
-
-// import queryString from "query-string";
-import io from "socket.io-client";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -26,36 +22,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-let socket;
-
-const App = (props) => {
+const App = () => {
   const classes = useStyles();
-  // const [name, setName] = useState("");
-  // const [room, setRoom] = useState("");
-  const [users, setUsers] = useState("");
-  const ENDPOINT = "http://localhost:5000/";
-
-  useEffect(() => {
-    socket = io(ENDPOINT);
-    // if (location.search !== "") {
-    //   const { name, room } = queryString.parse(location.search);
-
-    //   setRoom(room);
-    //   setName(name);
-
-    //   socket.emit("join", { name, room }, (error) => {
-    //     if (error) {
-    //       alert(error);
-    //     }
-    //   });
-    // }
-  }, [ENDPOINT]);
-
-  useEffect(() => {
-    socket.on("roomData", ({ users }) => {
-      setUsers(users);
-    });
-  }, []);
 
   return (
     <Router>
@@ -65,7 +33,6 @@ const App = (props) => {
             <Grid item lg={10} xs={12} className={classes.content}>
               <Switch>
                 <Route exact path="/" component={Home} />
-                <Route exact path="/join" component={Join} />
                 {/* Authenticate */}
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/sign-up" component={SignUp} />
@@ -78,7 +45,7 @@ const App = (props) => {
               </Switch>
             </Grid>
             <Grid item lg={2} xs={12}>
-              <OnlineList users={users} />
+              <OnlineList />
             </Grid>
           </Grid>
         </ResponsiveDrawer>

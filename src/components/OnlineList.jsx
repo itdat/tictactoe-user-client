@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import UserPlaceholder from "../images/UserPlaceholder2.svg";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -10,6 +10,9 @@ import {
   ListItemText,
   Typography,
 } from "@material-ui/core";
+import io from "socket.io-client";
+
+let socket;
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,13 +30,21 @@ const useStyles = makeStyles((theme) => ({
   toolbarMargin: theme.mixins.toolbar,
 }));
 
-const OnlineList = ({ users }) => {
+const OnlineList = () => {
   const classes = useStyles();
+  const [users, setUsers] = useState([]);
+  const ENDPOINT = "http://localhost:5000/";
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.on("roomData", ({ users }) => {
+      setUsers(users);
+    });
+  }, []);
 
   return (
     <Box className={classes.container}>
       <Box className={classes.content}>
-        {users && users !== "" ? (
+        {users.length !== 0 ? (
           <List component="nav">
             {users.map(({ name }) => (
               <ListItem button key={name}>
