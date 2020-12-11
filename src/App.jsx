@@ -15,6 +15,12 @@ import Guide from "./pages/Guide";
 import OnlineList from "./components/OnlineList";
 import ResponsiveDrawer from "./layout/ResponsiveDrawer";
 import { makeStyles } from "@material-ui/core/styles";
+import io from "socket.io-client";
+
+let socket;
+const ENDPOINT = process.env.REACT_APP_API_URL;
+
+export const ThemeContext = React.createContext('');
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -25,29 +31,35 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
   const classes = useStyles();
 
+  socket = io(ENDPOINT, {
+    transports: ["websocket", "polling", "flashsocket"],
+  });
+
   return (
     <Router>
       <Fragment>
         <ResponsiveDrawer>
-          <Grid container>
-            <Grid item lg={10} xs={12} className={classes.content}>
-              <Switch>
-                <Route exact path="/" component={Home} />
-                {/* Authenticate */}
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/sign-up" component={SignUp} />
-                <Route exact path="/logout" component={Logout} />
-                {/*  */}
-                <Route path="/profiles" component={Profiles} />
-                <Route exact path="/rank" component={Rank} />
-                <Route exact path="/online" component={Online} />
-                <Route exact path="/guide" component={Guide} />
-              </Switch>
+          <ThemeContext.Provider value={socket}>
+            <Grid container>
+              <Grid item lg={10} xs={12} className={classes.content}>
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  {/* Authenticate */}
+                  <Route exact path="/login" component={Login} />
+                  <Route exact path="/sign-up" component={SignUp} />
+                  <Route exact path="/logout" component={Logout} />
+                  {/*  */}
+                  <Route path="/profiles" component={Profiles} />
+                  <Route exact path="/rank" component={Rank} />
+                  <Route exact path="/online" component={Online} />
+                  <Route exact path="/guide" component={Guide} />
+                </Switch>
+              </Grid>
+              <Grid item lg={2} xs={12}>
+                <OnlineList />
+              </Grid>
             </Grid>
-            <Grid item lg={2} xs={12}>
-              <OnlineList />
-            </Grid>
-          </Grid>
+          </ThemeContext.Provider>
         </ResponsiveDrawer>
       </Fragment>
     </Router>

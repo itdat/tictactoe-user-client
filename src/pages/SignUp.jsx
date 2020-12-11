@@ -71,7 +71,7 @@ export default function SignUp({ history }) {
     };
     try {
       const res = await axios.post(
-        "https://tictactoe-user-api.herokuapp.com/users/register",
+        `${process.env.REACT_APP_API_URL}/users/register`,
         data,
         config
       );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import UserPlaceholder from "../images/UserPlaceholder2.svg";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -11,10 +11,8 @@ import {
   ListItemText,
   Typography,
 } from "@material-ui/core";
-import io from "socket.io-client";
 import { v4 as uuid } from "uuid";
-
-let socket;
+import { ThemeContext } from '../App';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -32,34 +30,17 @@ const useStyles = makeStyles((theme) => ({
   toolbarMargin: theme.mixins.toolbar,
 }));
 
-// const loadUsername = () => {
-//   try {
-//     const serializedState = localStorage.getItem('username');
-//     console.log('[ loadUsername ]', serializedState);
-//     if (serializedState === null) {
-//       return undefined;
-//     }
-//     return JSON.parse(serializedState);
-//   } catch (e) {
-//     return undefined;
-//   }
-// };
-
 const OnlineList = () => {
+  const socket = useContext(ThemeContext)
+  // console.log('[Online List] socket = ', socket);
+
   const classes = useStyles();
   const [users, setUsers] = useState([]);
 
-  const ENDPOINT = "https://tictactoe-user-api.herokuapp.com/";
-  socket = io(ENDPOINT, {
-    transports: ["websocket", "polling", "flashsocket"],
+  socket.on("getOnlineUsers", ({ users }) => {
+    setUsers(users);
+    // console.log('[Online List] users = ', users);
   });
-  
-  useEffect(() => {
-    socket.on("roomData", ({ users }) => {
-      setUsers(users);
-      // console.log('[ roomData ]', users);
-    });
-  }, []);
 
   return (
     <Hidden mdDown>

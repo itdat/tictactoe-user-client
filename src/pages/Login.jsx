@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import {
   Avatar,
   Button,
@@ -10,14 +10,13 @@ import {
   Typography,
   Container,
 } from "@material-ui/core";
-import io from "socket.io-client";
 
 import { Link } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
+import {ThemeContext} from '../App';
 
-let socket;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -45,30 +44,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login({ history }) {
+  const socket = useContext(ThemeContext)
   const classes = useStyles();
+  // console.log('[Login] socket = ', socket);
 
   const [formData, setFormData] = useState({ username: "", password: "" });
-  const [username, setUsername] = useState('');
-  const ENDPOINT = "https://tictactoe-user-api.herokuapp.com/";
-
-  useEffect(() => {
-    socket = io(ENDPOINT, {
-      transports: ["websocket", "polling", "flashsocket"],
-    });
-
-    // console.log('[ Online List ] Username = ', username);
-
-    let room = "1234";
-
-    if (username !== '') {
-      socket.emit('join', { name: username, room }, (error) => {
-        if(error) {
-          alert(error);
-        }
-      });
-    }
-
-  }, [ENDPOINT, username]);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -91,14 +71,13 @@ export default function Login({ history }) {
     };
     try {
       const res = await axios.post(
-        "https://tictactoe-user-api.herokuapp.com/users/login",
+        `${process.env.REACT_APP_API_URL}/users/login`,
         data,
         config
       );
       if (res.status === 200) {
-        setUsername(formData.username);
-        // localStorage.setItem("username", username);
         history.push("/");
+        socket.emit('join', {userId: '', name: username});
       }
     } catch (err) {
       console.log(err);
