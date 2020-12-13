@@ -11,6 +11,7 @@ import Profiles from "./pages/Profiles";
 import Rank from "./pages/Rank";
 import Online from "./pages/Online";
 import Guide from "./pages/Guide";
+import PlayGame from "./pages/PlayGame"
 
 import OnlineList from "./components/OnlineList";
 import ResponsiveDrawer from "./layout/ResponsiveDrawer";
@@ -50,6 +51,7 @@ const App = () => {
                   <Route exact path="/logout" component={Logout} />
                   {/*  */}
                   <Route path="/profiles" component={Profiles} />
+                  <Route exact path="/play-game" component={PlayGame} />
                   <Route exact path="/rank" component={Rank} />
                   <Route exact path="/online" component={Online} />
                   <Route exact path="/guide" component={Guide} />
