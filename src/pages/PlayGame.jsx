@@ -6,8 +6,12 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+
 import GameRoomSearchDropdown from "../presentations/play_game/RoomSearchDropdown";
 import GameRoomListView from "../presentations/play_game/RoomListView";
+import RoomCreateModal from "../presentations/play_game/RoomCreateModal"
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -32,9 +36,12 @@ const PlayGame = () => {
       style={{ marginTop: "25px" }}
     >
       <GameRoomSearchDropdown />
-      <Button variant="contained" color="primary" onClick={onCreateRoom}>
-        Create room
-      </Button>
+      <Popup
+        modal
+        lockScroll={true}
+        trigger={<Button variant="contained" color="primary" onClick={onCreateRoom}> Create room </Button>}>
+        {close => <RoomCreateModal close={close}/>}
+      </Popup>
     </Grid>
     <Card className={classes.card} style={{ marginTop: "15px" }}>
       <CardContent style={{ padding: "18px" }}>
