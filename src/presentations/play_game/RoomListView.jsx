@@ -98,15 +98,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const rooms = [
-  { code: 'ASFRNYU', level: '5', host: 'ken.yoho', status: 'waiting', participants: 1 },
-  { code: 'ASFRNYU', level: '2', host: 'thucuyen01', status: 'playing', participants: 6 },
-  { code: 'HJSBNSB', level: '3', host: 'vanhuy', status: 'waiting', participants: 1 },
-  { code: 'H9HSJ45', level: '3', host: 'tuandat', status: 'playing', participants: 5 },
-  { code: 'HHJSHS7', level: '1', host: 'datit', status: 'waiting', participants: 1 },
-  { code: '48HHNVS', level: '4', host: 'huyit12', status: 'waiting', participants: 1 },
-  { code: '52GSHSH', level: '2', host: 'huyphan', status: 'waiting', participants: 1 },
-  { code: '98GSHGS', level: '2', host: 'nikochin', status: 'waiting', participants: 1 },
-  { code: '8FGHS09', level: '1', host: 'tuyennguyen', status: 'waiting', participants: 1 },
+  { code: 'ASFRNYU', level: 5, host: 'ken.yoho', status: 'waiting', participants: 1 },
+  { code: 'ASFRNYU', level: 2, host: 'thucuyen01', status: 'playing', participants: 6 },
+  { code: 'HJSBNSB', level: 3, host: 'vanhuy', status: 'waiting', participants: 1 },
+  { code: 'H9HSJ45', level: 3, host: 'tuandat', status: 'playing', participants: 5 },
+  { code: 'HHJSHS7', level: 1, host: 'datit', status: 'waiting', participants: 1 },
+  { code: '48HHNVS', level: 4, host: 'huyit12', status: 'waiting', participants: 1 },
+  { code: '52GSHSH', level: 2, host: 'huyphan', status: 'waiting', participants: 1 },
+  { code: '98GSHGS', level: 2, host: 'nikochin', status: 'waiting', participants: 1 },
+  { code: '8FGHS09', level: 1, host: 'tuyennguyen', status: 'waiting', participants: 1 },
 ];
 
 export default function GameRoomListView() {
