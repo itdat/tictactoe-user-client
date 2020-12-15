@@ -77,8 +77,13 @@ export default function Login({ history }) {
         config
       );
       if (res.status === 200) {
-        history.push("/");
-        socket.emit('join', { userId: '', name: username });
+        socket.emit('setStatus', { name: username, status: 1 }, (error) => {
+          if (error) {
+            alert(error);
+          } else {
+            history.push("/");
+          }
+        });
       }
     } catch (err) {
       console.log(err);
