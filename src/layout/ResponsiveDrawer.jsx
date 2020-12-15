@@ -117,6 +117,14 @@ function ResponsiveDrawer(props) {
             <ListItemText primary="Play Game" />
           </ListItem>
         </Link>
+        <Link to="/room" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon>
+              <VideogameAsset />
+            </ListItemIcon>
+            <ListItemText primary="Room (temp)" />
+          </ListItem>
+        </Link>
         <Link to="/rank" className={classes.link}>
           <ListItem button>
             <ListItemIcon>

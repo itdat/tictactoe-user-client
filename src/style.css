@@ -1,0 +1,184 @@
+#game-wrapper {
+  /* display: flex;
+  flex-wrap: nowrap; */
+}
+
+#board {
+  display: inline-block;
+  vertical-align: top;
+  border-radius: 20px;
+  max-width: 640px;
+  max-height: 640px;
+}
+
+#board .row:first-child .board-item:first-child {
+  border-radius: 20px 0 0 0;
+}
+
+#board .row:first-child .board-item:last-child {
+  border-radius: 0 20px 0 0;
+}
+
+#board .row:last-child .board-item:first-child {
+  border-radius: 0 0 0 20px;
+}
+
+#board .row:last-child .board-item:last-child {
+  border-radius: 0 0 20px 0;
+}
+
+#board .row:first-child .board-item {
+  border-top: 5px solid #e2e4e7;
+}
+
+#board .row .board-item:first-child {
+  border-left: 5px solid #e2e4e7;
+}
+
+#info {
+  display: inline-block;
+  vertical-align: top;
+  width: 200px;
+  max-height: 640px;
+  overflow: hidden;
+  text-align: start;
+  margin-left: 1rem;
+}
+
+#info .btn {
+  border-radius: 10px;
+}
+
+#info .btn-block {
+  margin-top: 0;
+}
+
+#info #moves {
+  max-height: 600px;
+  display: block;
+  overflow: auto;
+  padding: 0.5rem;
+}
+
+#moves button {
+  margin: 0.25rem 0;
+}
+
+.sort-toggle {
+  display: block;
+  width: 100%;
+}
+
+.board-item {
+  min-width: 64px;
+  min-height: 64px;
+  border-bottom: 5px solid #e2e4e7;
+  border-right: 5px solid #e2e4e7;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.board-item img {
+  width: 30px;
+}
+
+.board-item img.win-move {
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  animation-iteration-count: infinite;
+}
+
+.board-item img:hover {
+  width: 32px;
+  transition-duration: 100ms;
+}
+
+.board-item:hover {
+  transition-duration: 500ms;
+}
+
+.scores {
+  border-radius: 25px;
+  padding: 0.2rem 1rem;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 880px) {
+  .sort-toggle {
+    display: inline;
+    width: auto;
+  }
+
+  #info {
+    width: auto;
+    display: flex;
+    margin: 1rem auto;
+    max-width: 640px;
+  }
+
+  #info #moves {
+    display: flex;
+  }
+
+  #moves button {
+    margin: 0 0.25rem;
+  }
+}
+
+@media (max-width: 770px) {
+  #board {
+    max-width: 448px;
+    max-height: 448px;
+  }
+
+  #info {
+    max-width: 448px;
+  }
+}
+
+@media (max-width: 480px) {
+  #board {
+    max-width: 320px;
+    max-height: 320px;
+  }
+  #info {
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 350px) {
+  #board {
+    max-width: 192px;
+    max-height: 192px;
+  }
+  #info {
+    max-width: 192px;
+  }
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
