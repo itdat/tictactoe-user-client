@@ -12,6 +12,8 @@ import {
   Typography,
 } from "@material-ui/core";
 
+// import useStateWithLocalStorage from '../../hooks/LocalStorageHook.jsx'
+
 import "./css/styles.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +46,8 @@ const RoomCreateModal = ({ close }) => {
 
   const [formData, setFormData] = useState({ room: "", level: 0 });
 
+  // const [name, setName] = useStateWithLocalStorage("currentName");
+
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -53,7 +57,7 @@ const RoomCreateModal = ({ close }) => {
   }
 
   return <div className="modal">
-    <a className="close" onClick={close}>
+    <a className="close" href="/#" onClick={close}>
       &times;
     </a>
     <div className="content">
@@ -80,14 +84,13 @@ const RoomCreateModal = ({ close }) => {
             autoFocus
           />
           <Grid container xs={3} sm item className={classes.inputField}>
-            <Grid item style={{ marginRight: ".75rem"}}>
+            <Grid item style={{ marginRight: ".75rem" }}>
               <Typography component="legend">Difficulty level </Typography>
             </Grid>
             <Grid item>
               <Rating
                 name="simple-controlled"
                 value={formData.level}
-                name="level"
                 onChange={handleInputChange}
               />
             </Grid>
@@ -102,6 +105,10 @@ const RoomCreateModal = ({ close }) => {
           >
             Create
           </Button>
+          {/* TODO */}
+          {/* <Link onClick={e => (!name || !formData.room) ? e.preventDefault() : null} to={`/chat?name=${name}&room=${formData.room}`}>
+            
+          </Link> */}
         </form>
       </div>
     </div>

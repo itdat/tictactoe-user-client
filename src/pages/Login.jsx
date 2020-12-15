@@ -15,8 +15,9 @@ import { Link } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import {ThemeContext} from '../App';
 
+import { ThemeContext } from '../App';
+import OnlineListWrapper from "../components/OnlineListWrapper";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -77,7 +78,7 @@ export default function Login({ history }) {
       );
       if (res.status === 200) {
         history.push("/");
-        socket.emit('join', {userId: '', name: username});
+        socket.emit('join', { userId: '', name: username });
       }
     } catch (err) {
       console.log(err);
@@ -85,74 +86,76 @@ export default function Login({ history }) {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
+    <OnlineListWrapper>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
         </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="username"
-            label={formData.username === "" ? "Username" : ""}
-            value={formData.username}
-            onChange={handleInputChange}
-            name="username"
-            autoComplete="username"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label={formData.password === "" ? "Password" : ""}
-            value={formData.password}
-            onChange={handleInputChange}
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={handleLogin}
-          >
-            Sign In
+          <form className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="username"
+              label={formData.username === "" ? "Username" : ""}
+              value={formData.username}
+              onChange={handleInputChange}
+              name="username"
+              autoComplete="username"
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label={formData.password === "" ? "Password" : ""}
+              value={formData.password}
+              onChange={handleInputChange}
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={handleLogin}
+            >
+              Sign In
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link
-                style={{ color: "inherit" }}
-                to="/forgot-password"
-                variant="body2"
-              >
-                Forgot password?
+            <Grid container>
+              <Grid item xs>
+                <Link
+                  style={{ color: "inherit" }}
+                  to="/forgot-password"
+                  variant="body2"
+                >
+                  Forgot password?
               </Link>
+              </Grid>
+              <Grid item>
+                <Link style={{ color: "inherit" }} to="/sign-up" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link style={{ color: "inherit" }} to="/sign-up" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+          </form>
+        </div>
+      </Container>
+    </OnlineListWrapper>
   );
 }

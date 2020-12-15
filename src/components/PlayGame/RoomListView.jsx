@@ -1,6 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { v4 as uuid } from "uuid";
+
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -109,14 +111,14 @@ const rooms = [
   { code: '8FGHS09', level: 1, host: 'tuyennguyen', status: 'waiting', participants: 1 },
 ];
 
-export default function GameRoomListView() {
+export default function RoomListView() {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
         {rooms.map(({ code, level, host, status, participants }) => (
-          <Grid item xs={4}>
+          <Grid item xs={4} key={uuid()}>
             <Container className={classes.cardItem}>
               <Grid item>
                 <ButtonBase

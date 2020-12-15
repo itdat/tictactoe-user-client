@@ -9,9 +9,10 @@ import Grid from '@material-ui/core/Grid';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 
-import GameRoomSearchDropdown from "../presentations/play_game/RoomSearchDropdown";
-import GameRoomListView from "../presentations/play_game/RoomListView";
-import RoomCreateModal from "../presentations/play_game/RoomCreateModal"
+import RoomSearchHeader from "../components/PlayGame/RoomSearchHeader";
+import GameRoomListView from "../components/PlayGame/RoomListView";
+import RoomCreateModal from "../components/PlayGame/RoomCreateModal"
+import OnlineListWrapper from "../components/OnlineListWrapper";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -27,28 +28,30 @@ const PlayGame = () => {
   };
 
   return <Fragment>
-    <h1>Play Game</h1>
-    <Grid
-      container
-      direction="row"
-      justify="space-between"
-      alignItems="center"
-      style={{ marginTop: "25px" }}
-    >
-      <GameRoomSearchDropdown />
-      <Popup
-        modal
-        lockScroll={true}
-        trigger={<Button variant="contained" color="primary" onClick={onCreateRoom}> Create room </Button>}>
-        {close => <RoomCreateModal close={close}/>}
-      </Popup>
-    </Grid>
-    <Card className={classes.card} style={{ marginTop: "15px" }}>
-      <CardContent style={{ padding: "18px" }}>
-        <GameRoomListView />
-      </CardContent>
-    </Card>
-  </Fragment>
+    <OnlineListWrapper>
+      <h1>Play Game</h1>
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+        style={{ marginTop: "25px" }}
+      >
+        <RoomSearchHeader />
+        <Popup
+          modal
+          lockScroll={true}
+          trigger={<Button variant="contained" color="primary" onClick={onCreateRoom}> Create room </Button>}>
+          {close => <RoomCreateModal close={close} />}
+        </Popup>
+      </Grid>
+      <Card className={classes.card} style={{ marginTop: "15px" }}>
+        <CardContent style={{ padding: "18px" }}>
+          <GameRoomListView />
+        </CardContent>
+      </Card>
+    </OnlineListWrapper>
+  </Fragment>;
 };
 
 export default PlayGame;

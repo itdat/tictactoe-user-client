@@ -15,6 +15,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+import OnlineListWrapper from "../components/OnlineListWrapper";
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -85,82 +87,84 @@ export default function SignUp({ history }) {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
+    <OnlineListWrapper>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
         </Typography>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="fullname"
-                name="fullname"
-                autoComplete="fullname"
-                label={formData.fullname === "" ? "Fullname" : ""}
-                value={formData.fullname}
-                onChange={handleInputChange}
-              />
+          <form className={classes.form} noValidate>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="fullname"
+                  name="fullname"
+                  autoComplete="fullname"
+                  label={formData.fullname === "" ? "Fullname" : ""}
+                  value={formData.fullname}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="username"
+                  name="username"
+                  autoComplete="username"
+                  label={formData.username === "" ? "Username" : ""}
+                  value={formData.username}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  label={formData.password === "" ? "Password" : ""}
+                  value={formData.password}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={<Checkbox value="allowExtraEmails" color="primary" />}
+                  label="I want to receive inspiration, marketing promotions and updates via email."
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="username"
-                name="username"
-                autoComplete="username"
-                label={formData.username === "" ? "Username" : ""}
-                value={formData.username}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                label={formData.password === "" ? "Password" : ""}
-                value={formData.password}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            className={classes.submit}
-            onClick={handleSignUp}
-          >
-            Sign Up
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              className={classes.submit}
+              onClick={handleSignUp}
+            >
+              Sign Up
           </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link style={{ color: "inherit" }} to="/login" variant="body2">
-                Already have an account? Sign in
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link style={{ color: "inherit" }} to="/login" variant="body2">
+                  Already have an account? Sign in
               </Link>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+          </form>
+        </div>
+      </Container>
+    </OnlineListWrapper>
   );
 }

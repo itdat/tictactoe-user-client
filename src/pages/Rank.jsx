@@ -1,7 +1,11 @@
 import React from "react";
 
+import OnlineListWrapper from "../components/OnlineListWrapper";
+
 const Rank = () => {
-  return <h1>Rank</h1>;
+  return <OnlineListWrapper>
+    <h1>Rank</h1>
+  </OnlineListWrapper>;
 };
 
 export default Rank;

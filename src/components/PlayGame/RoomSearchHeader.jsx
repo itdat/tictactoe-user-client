@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CustomizedInputBase() {
+export default function RoomSearchHeader() {
   const classes = useStyles();
 
   return (
