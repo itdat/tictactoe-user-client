@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import UserPlaceholder from "../images/UserPlaceholder2.svg";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -31,16 +31,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const OnlineList = () => {
-  const socket = useContext(ThemeContext)
-  // console.log('[Online List] socket = ', socket);
-
   const classes = useStyles();
   const [users, setUsers] = useState([]);
+  const socket = useContext(ThemeContext)
 
-  socket.on("getOnlineUsers", ({ users }) => {
-    setUsers(users);
-    // console.log('[Online List] users = ', users);
-  });
+  useEffect(() => {
+    socket.on("getOnlineUsers", ({ users }) => {
+      setUsers(users);
+    });
+  }, [socket])
 
   return (
     <Hidden mdDown>
@@ -58,10 +57,10 @@ const OnlineList = () => {
               ))}
             </List>
           ) : (
-            <Box p={2}>
-              <Typography>No one is online yet...</Typography>
-            </Box>
-          )}
+              <Box p={2}>
+                <Typography>No one is online yet...</Typography>
+              </Box>
+            )}
         </Box>
         <Box className={classes.toolbarMargin} />
       </Box>
