@@ -1,8 +1,8 @@
 /* index.css */ 
-.tictactoe-popup-content {
+.popup-content {
   margin: auto;
   background: none; 
-  width: 50%;
+  width: 30%;
   border: none;
 }
 .tictactoe-modal {

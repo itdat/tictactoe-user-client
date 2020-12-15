@@ -10,6 +10,7 @@ import {
   TextField,
   Grid,
   Typography,
+  Link,
 } from "@material-ui/core";
 
 // import useStateWithLocalStorage from '../../hooks/LocalStorageHook.jsx'
@@ -44,17 +45,20 @@ const useStyles = makeStyles((theme) => ({
 const RoomCreateModal = ({ close }) => {
   const classes = useStyles();
 
+  const [name] = useState(
+    localStorage.getItem('currentName') || ''
+  );
   const [formData, setFormData] = useState({ room: "", level: 0 });
 
   // const [name, setName] = useStateWithLocalStorage("currentName");
 
   const handleInputChange = (e) => {
+    if (e.target.name === 'level') {
+      setFormData({ ...formData, [e.target.name]: parseInt(e.target.value) });
+      return;
+    }
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  const handleCreateRoom = async (e) => {
-    e.preventDefault();
-  }
 
   return <div className="tictactoe-modal">
     <a className="close" href="/#" onClick={close}>
@@ -95,20 +99,19 @@ const RoomCreateModal = ({ close }) => {
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={handleCreateRoom}
-          >
-            Create
-          </Button>
+
           {/* TODO */}
-          {/* <Link onClick={e => (!name || !formData.room) ? e.preventDefault() : null} to={`/chat?name=${name}&room=${formData.room}`}>
-            
-          </Link> */}
+          <Link onClick={e => (!formData.room || !formData.level) ? e.preventDefault() : null} to={`/room?name=${name}&room=${formData.room}&level=${formData.level}`}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Create
+          </Button>
+          </Link>
         </form>
       </div>
     </div>

@@ -81,6 +81,9 @@ export default function Login({ history }) {
           if (error) {
             alert(error);
           } else {
+            // save cache to localStorage by hook
+            localStorage.setItem('currentName', username);
+
             history.push("/");
           }
         });
