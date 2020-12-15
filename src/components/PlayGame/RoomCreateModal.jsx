@@ -56,7 +56,7 @@ const RoomCreateModal = ({ close }) => {
     e.preventDefault();
   }
 
-  return <div className="modal">
+  return <div className="tictactoe-modal">
     <a className="close" href="/#" onClick={close}>
       &times;
     </a>
@@ -89,8 +89,8 @@ const RoomCreateModal = ({ close }) => {
             </Grid>
             <Grid item>
               <Rating
-                name="simple-controlled"
                 value={formData.level}
+                name="level"
                 onChange={handleInputChange}
               />
             </Grid>

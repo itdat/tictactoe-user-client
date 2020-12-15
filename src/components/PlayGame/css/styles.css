@@ -1,14 +1,14 @@
 /* index.css */ 
-.popup-content {
+.tictactoe-popup-content {
   margin: auto;
   background: none; 
   width: 50%;
   border: none;
 }
-.modal {
+.tictactoe-modal {
   font-size: 12px;
 }
-.modal > .header {
+.tictactoe-modal > .header {
   width: 100%;
   background: white;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);;
@@ -18,12 +18,12 @@
   text-align: left;
   padding: 15px;
 }
-.modal > .content {
+.tictactoe-modal > .content {
   width: 100%;
   padding: 30px 30px;
   background: white;
 }
-.modal > .footer {
+.tictactoe-modal > .footer {
   width: 100%;
   padding: 25px 30px;
   text-align: right;
@@ -34,15 +34,15 @@
   border-bottom-left-radius: .4375rem;
   border-bottom-right-radius: .4375rem;
 }
-.modal > .actions {
+.tictactoe-modal > .actions {
   margin: auto;
 }
-.modal > .actions {
+.tictactoe-modal > .actions {
   width: 100%;
   padding: 10px 5px;
   text-align: center;
 }
-.modal > .close {
+.tictactoe-modal > .close {
   cursor: pointer;
   position: absolute;
   display: block;
