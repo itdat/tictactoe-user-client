@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Avatar,
   Button,
@@ -14,7 +14,7 @@ import {
 import { Link } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
+import AuthContext from "../context/auth/authContext";
 
 import { ThemeContext } from "../App";
 import OnlineListWrapper from "../components/OnlineListWrapper";
@@ -45,49 +45,56 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login({ history }) {
-  const socket = useContext(ThemeContext);
   const classes = useStyles();
+  const socket = useContext(ThemeContext);
 
+  // Use auth context
+  const authContext = useContext(AuthContext);
+  const { login, error, clearErrors, isAuthenticated } = authContext;
+
+  // Get form data
   const [formData, setFormData] = useState({ username: "", password: "" });
 
+  const { username, password } = formData;
+
+  // Listen if user is authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      socket.emit("setStatus", { name: username, status: 1 }, (error) => {
+        if (error) {
+          alert(error);
+        } else {
+          localStorage.setItem("currentName", username);
+          history.push("/");
+        }
+      });
+      history.push("/");
+    }
+
+    if (error === "Invalid Credentials") {
+      // setAlert(error, "danger");
+      alert(error);
+      clearErrors();
+    }
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, history]);
+
+  // Handle input change
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = async (e) => {
+  // Handle submit form
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    const username = formData.username;
-    const password = formData.password;
-
-    const data = {
-      username,
-      password,
-    };
-    try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/auth`,
-        data,
-        config
-      );
-      if (res.status === 200) {
-        socket.emit("setStatus", { name: username, status: 1 }, (error) => {
-          if (error) {
-            alert(error);
-          } else {
-            // save cache to localStorage by hook
-            localStorage.setItem("currentName", username);
-            history.push("/");
-          }
-        });
-      }
-    } catch (err) {
-      console.log(err);
+    if (username === "" || password === "") {
+      // setAlert("Please fill in all fields");
+      alert("Please fill in all fields");
+    } else {
+      login({
+        username,
+        password,
+      });
     }
   };
 
@@ -139,7 +146,7 @@ export default function Login({ history }) {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={handleLogin}
+              onClick={handleSubmit}
             >
               Sign In
             </Button>
