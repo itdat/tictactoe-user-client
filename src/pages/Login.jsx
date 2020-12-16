@@ -52,9 +52,10 @@ export default function Login({ history }) {
   const authContext = useContext(AuthContext);
   const { login, error, clearErrors, isAuthenticated } = authContext;
 
-  // Get form data
+  // Init form data
   const [formData, setFormData] = useState({ username: "", password: "" });
 
+  // Get form data
   const { username, password } = formData;
 
   // Listen if user is authenticated
@@ -68,7 +69,6 @@ export default function Login({ history }) {
           history.push("/");
         }
       });
-      history.push("/");
     }
 
     if (error === "Invalid Credentials") {
@@ -84,7 +84,7 @@ export default function Login({ history }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle submit form
+  // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (username === "" || password === "") {
