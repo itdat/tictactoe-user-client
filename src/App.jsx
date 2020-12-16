@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import "./style.css";
+import setAuthToken from "./utils/setAuthToken";
 
 import AuthState from "./context/auth/AuthState";
 
@@ -33,6 +34,8 @@ const useStyles = makeStyles((theme) => ({
     padding: "2rem",
   },
 }));
+
+setAuthToken(localStorage.token);
 
 const App = () => {
   const classes = useStyles();

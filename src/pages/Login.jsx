@@ -50,7 +50,14 @@ export default function Login({ history }) {
 
   // Use auth context
   const authContext = useContext(AuthContext);
-  const { login, error, clearErrors, isAuthenticated } = authContext;
+  const {
+    login,
+    error,
+    clearErrors,
+    isAuthenticated,
+    loadUser,
+    user,
+  } = authContext;
 
   // Init form data
   const [formData, setFormData] = useState({ username: "", password: "" });
@@ -58,26 +65,32 @@ export default function Login({ history }) {
   // Get form data
   const { username, password } = formData;
 
+  useEffect(() => {
+    loadUser();
+    // eslint-disable-next-line
+  }, []);
+
   // Listen if user is authenticated
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     socket.emit("setStatus", { name: username, status: 1 }, (error) => {
-  //       if (error) {
-  //         alert(error);
-  //       } else {
-  //         localStorage.setItem("currentName", username);
-  //         history.push("/");
-  //       }
-  //     });
-  //   }
-  // 
-  //   if (error === "Invalid Credentials") {
-  //     // setAlert(error, "danger");
-  //     alert(error);
-  //     clearErrors();
-  //   }
-  //   // eslint-disable-next-line
-  // }, [error, isAuthenticated, history]);
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push("/");
+      socket.emit("setStatus", { name: user.username, status: 1 }, (err) => {
+        if (err) {
+          alert(err);
+        } else {
+          localStorage.setItem("currentName", user.username);
+          history.push("/");
+        }
+      });
+    }
+
+    if (error === "Invalid Credentials") {
+      // setAlert(error, "danger");
+      alert(error);
+      clearErrors();
+    }
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, history]);
 
   // Handle input change
   const handleInputChange = (e) => {
@@ -96,14 +109,14 @@ export default function Login({ history }) {
         password,
       });
 
-      socket.emit("setStatus", { name: username, status: 1 }, (error) => {
-        if (error) {
-          alert(error);
-        } else {
-          localStorage.setItem("currentName", username);
-          history.push("/");
-        }
-      });
+      // socket.emit("setStatus", { name: username, status: 1 }, (error) => {
+      //   if (error) {
+      //     alert(error);
+      //   } else {
+      //     localStorage.setItem("currentName", username);
+      //     history.push("/");
+      //   }
+      // });
     }
   };
 
