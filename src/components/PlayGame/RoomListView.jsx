@@ -126,7 +126,7 @@ export default function RoomListView({ rooms }) {
     <div className={classes.root}>
       <Grid container spacing={3}>
         {rooms.map(({ gamers, id, level, name, participants, status }) => (
-          <Grid item xs={4} key={uuid()}>
+          <Grid item xs={4} spacing={3} key={uuid()}>
             <Container className={classes.cardItem}>
               <Grid item>
                 <ButtonBase
@@ -161,29 +161,20 @@ export default function RoomListView({ rooms }) {
                   </span>
                 </ButtonBase>
               </Grid>
-              <Grid style={{ marginTop: "10px" }} item xs={12} sm container>
-                <Grid item xs container direction="column" spacing={2}>
-                  <Grid item xs>
-                    <Typography gutterBottom variant="subtitle1">
-                      {name}
-                    </Typography>
-                  </Grid>
+              <Grid item style={{ marginTop: "15px" }}>
+                <Typography align="center" gutterBottom variant="subtitle1">
+                  {name}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm container spacing={1} style={{ justifyContent: "center", alignItems: "center", marginTop: "8px" }}>
+                <Grid item>
+                  <Typography component="legend">Level</Typography>
                 </Grid>
                 <Grid item>
-                  <Grid container
-                    xs={6}
-                    justify="space-between"
-                    alignItems="center">
-                    <Grid item>
-                      <Typography component="legend">Level</Typography>
-                    </Grid>
-                    <Grid item>
-                      <Rating name="read-only" value={parseInt(level)} readOnly />
-                    </Grid>
-                  </Grid>
+                  <Rating name="read-only" value={parseInt(level)} readOnly />
                 </Grid>
               </Grid>
-              <Grid item xs={12} sm container style={{ justifyContent: "space-between", alignItems: "center" }}>
+              <Grid item xs={12} sm container style={{ justifyContent: "space-between", alignItems: "center", marginTop: "12px" }}>
                 {status === 'waiting'
                   ? (<Grid item>
                     <div className={classes.flexGrid}>
