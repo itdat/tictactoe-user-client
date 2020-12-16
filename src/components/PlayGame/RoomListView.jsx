@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from "react-router-dom";
 
 import { v4 as uuid } from "uuid";
 
@@ -7,7 +8,6 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Rating from '@material-ui/lab/Rating';
@@ -99,35 +99,46 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const rooms = [
-  { code: 'ASFRNYU', level: 5, host: 'ken.yoho', status: 'waiting', participants: 1 },
-  { code: 'ASFRNYU', level: 2, host: 'thucuyen01', status: 'playing', participants: 6 },
-  { code: 'HJSBNSB', level: 3, host: 'vanhuy', status: 'waiting', participants: 1 },
-  { code: 'H9HSJ45', level: 3, host: 'tuandat', status: 'playing', participants: 5 },
-  { code: 'HHJSHS7', level: 1, host: 'datit', status: 'waiting', participants: 1 },
-  { code: '48HHNVS', level: 4, host: 'huyit12', status: 'waiting', participants: 1 },
-  { code: '52GSHSH', level: 2, host: 'huyphan', status: 'waiting', participants: 1 },
-  { code: '98GSHGS', level: 2, host: 'nikochin', status: 'waiting', participants: 1 },
-  { code: '8FGHS09', level: 1, host: 'tuyennguyen', status: 'waiting', participants: 1 },
-];
+/* const rooms = [
+  { name: 'ASFRNYU', level: 5, host: 'ken.yoho', status: 'waiting', participants: 1 },
+  { name: 'ASFRNYU', level: 2, host: 'thucuyen01', status: 'playing', participants: 6 },
+  { name: 'HJSBNSB', level: 3, host: 'vanhuy', status: 'waiting', participants: 1 },
+  { name: 'H9HSJ45', level: 3, host: 'tuandat', status: 'playing', participants: 5 },
+  { name: 'HHJSHS7', level: 1, host: 'datit', status: 'waiting', participants: 1 },
+  { name: '48HHNVS', level: 4, host: 'huyit12', status: 'waiting', participants: 1 },
+  { name: '52GSHSH', level: 2, host: 'huyphan', status: 'waiting', participants: 1 },
+  { name: '98GSHGS', level: 2, host: 'nikochin', status: 'waiting', participants: 1 },
+  { name: '8FGHS09', level: 1, host: 'tuyennguyen', status: 'waiting', participants: 1 },
+]; */
 
-export default function RoomListView() {
+export default function RoomListView({ rooms }) {
   const classes = useStyles();
+  const history = useHistory();
+  const [username] = useState(
+    localStorage.getItem('currentName') || ''
+  );
+
+  const goToRoom = (name, room, level) => {
+    history.push(`/room?name=${name}&room=${room}&level=${level}`);
+  };
 
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        {rooms.map(({ code, level, host, status, participants }) => (
+        {rooms.map(({ gamers, id, level, name, participants, status }) => (
           <Grid item xs={4} key={uuid()}>
             <Container className={classes.cardItem}>
               <Grid item>
                 <ButtonBase
                   focusRipple
-                  key={code}
+                  key={name}
                   className={classes.image}
                   focusVisibleClassName={classes.focusVisible}
                   style={{
                     width: "100%",
+                  }}
+                  onClick={() => {
+                    goToRoom(username, name, level)
                   }}
                 >
                   <span
@@ -154,24 +165,31 @@ export default function RoomListView() {
                 <Grid item xs container direction="column" spacing={2}>
                   <Grid item xs>
                     <Typography gutterBottom variant="subtitle1">
-                      {code}
+                      {name}
                     </Typography>
                   </Grid>
                 </Grid>
                 <Grid item>
-                  <Box component="fieldset" mb={3} borderColor="transparent">
-                    <Typography component="legend">Level</Typography>
-                    <Rating name="read-only" value={level} readOnly />
-                  </Box>
+                  <Grid container
+                    xs={6}
+                    justify="space-between"
+                    alignItems="center">
+                    <Grid item>
+                      <Typography component="legend">Level</Typography>
+                    </Grid>
+                    <Grid item>
+                      <Rating name="read-only" value={parseInt(level)} readOnly />
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
               <Grid item xs={12} sm container style={{ justifyContent: "space-between", alignItems: "center" }}>
                 {status === 'waiting'
                   ? (<Grid item>
                     <div className={classes.flexGrid}>
-                      <Avatar alt={host} src="" ></Avatar>
+                      <Avatar alt="gamer 01" src="" ></Avatar>
                       <Typography variant="body2">
-                        {host}
+                        Gamer#01
                       </Typography>
                     </div>
                   </Grid>)

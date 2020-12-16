@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import VideogameAsset from "@material-ui/icons/VideogameAsset";
@@ -10,11 +10,9 @@ import {
   TextField,
   Grid,
   Typography,
-  Link,
 } from "@material-ui/core";
 
-// import useStateWithLocalStorage from '../../hooks/LocalStorageHook.jsx'
-
+import { ThemeContext } from '../../App';
 import "./css/styles.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -42,15 +40,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RoomCreateModal = ({ close }) => {
+const RoomCreateModal = ({ close, onClick }) => {
   const classes = useStyles();
+  const socket = useContext(ThemeContext)
 
   const [name] = useState(
     localStorage.getItem('currentName') || ''
   );
-  const [formData, setFormData] = useState({ room: "", level: 0 });
-
-  // const [name, setName] = useStateWithLocalStorage("currentName");
+  const [formData, setFormData] = useState({ room: socket.id, level: 0 });
 
   const handleInputChange = (e) => {
     if (e.target.name === 'level') {
@@ -61,7 +58,7 @@ const RoomCreateModal = ({ close }) => {
   };
 
   return <div className="tictactoe-modal">
-    <a className="close" href="/#" onClick={close}>
+    <a href="#/" className="close" onClick={close}>
       &times;
     </a>
     <div className="content">
@@ -75,6 +72,7 @@ const RoomCreateModal = ({ close }) => {
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
+            disabled
             variant="outlined"
             className={classes.inputField}
             required
@@ -99,19 +97,20 @@ const RoomCreateModal = ({ close }) => {
               />
             </Grid>
           </Grid>
-
-          {/* TODO */}
-          <Link onClick={e => (!formData.room || !formData.level) ? e.preventDefault() : null} to={`/room?name=${name}&room=${formData.room}&level=${formData.level}`}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Create
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={() => {
+              const { room, level} = formData;
+              onClick(name, room, level);
+              close();
+            }}
+          >
+            Create
           </Button>
-          </Link>
         </form>
       </div>
     </div>

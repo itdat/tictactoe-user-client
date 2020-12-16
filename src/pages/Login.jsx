@@ -59,25 +59,25 @@ export default function Login({ history }) {
   const { username, password } = formData;
 
   // Listen if user is authenticated
-  useEffect(() => {
-    if (isAuthenticated) {
-      socket.emit("setStatus", { name: username, status: 1 }, (error) => {
-        if (error) {
-          alert(error);
-        } else {
-          localStorage.setItem("currentName", username);
-          history.push("/");
-        }
-      });
-    }
-
-    if (error === "Invalid Credentials") {
-      // setAlert(error, "danger");
-      alert(error);
-      clearErrors();
-    }
-    // eslint-disable-next-line
-  }, [error, isAuthenticated, history]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     socket.emit("setStatus", { name: username, status: 1 }, (error) => {
+  //       if (error) {
+  //         alert(error);
+  //       } else {
+  //         localStorage.setItem("currentName", username);
+  //         history.push("/");
+  //       }
+  //     });
+  //   }
+  // 
+  //   if (error === "Invalid Credentials") {
+  //     // setAlert(error, "danger");
+  //     alert(error);
+  //     clearErrors();
+  //   }
+  //   // eslint-disable-next-line
+  // }, [error, isAuthenticated, history]);
 
   // Handle input change
   const handleInputChange = (e) => {
@@ -94,6 +94,15 @@ export default function Login({ history }) {
       login({
         username,
         password,
+      });
+
+      socket.emit("setStatus", { name: username, status: 1 }, (error) => {
+        if (error) {
+          alert(error);
+        } else {
+          localStorage.setItem("currentName", username);
+          history.push("/");
+        }
       });
     }
   };
