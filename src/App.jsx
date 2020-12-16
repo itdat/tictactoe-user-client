@@ -16,6 +16,7 @@ import Online from "./pages/Online";
 import Guide from "./pages/Guide";
 import PlayGame from "./pages/PlayGame";
 import Room from "./pages/Room";
+import History from "./pages/History";
 
 import ResponsiveDrawer from "./layout/ResponsiveDrawer";
 import { makeStyles } from "@material-ui/core/styles";
@@ -60,6 +61,8 @@ const App = () => {
                   <Route exact path="/rank" component={Rank} />
                   <Route exact path="/online" component={Online} />
                   <Route exact path="/guide" component={Guide} />
+                  <Route exact path="/history" component={History} />
+                  
                 </Switch>
               </div>
             </ThemeContext.Provider>

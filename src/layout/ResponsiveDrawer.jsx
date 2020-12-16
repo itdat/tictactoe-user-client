@@ -18,6 +18,7 @@ import AssessmentIcon from "@material-ui/icons/Assessment";
 import AnnouncementIcon from "@material-ui/icons/Announcement";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
+import HistoryIcon from '@material-ui/icons/History';
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -144,9 +145,17 @@ function ResponsiveDrawer(props) {
         <Link to="/guide" className={classes.link}>
           <ListItem button>
             <ListItemIcon>
-              <AnnouncementIcon />
+              <AnnouncementIcon />  
             </ListItemIcon>
             <ListItemText primary="Guide" />
+          </ListItem>
+        </Link>
+        <Link to="/history" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon>
+              <HistoryIcon />
+            </ListItemIcon>
+            <ListItemText primary="History" />
           </ListItem>
         </Link>
       </List>
