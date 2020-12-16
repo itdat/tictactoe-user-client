@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-// import Navbar from "../../components/Navbar";
+import React, { useState, useContext, useEffect } from "react";
 import Notification from "./Notification";
 import Board from "./Board";
 import History from "./History";
 import { calculateWinner } from "./services";
+import { ThemeContext } from "../../App";
 
 const Game = () => {
+  const socket = useContext(ThemeContext);
+
   const gameSize = 10;
   const winSteps = 5;
   const [history, setHistory] = useState([
@@ -21,32 +23,64 @@ const Game = () => {
   const [isAsc, setSort] = useState(false);
 
   const handleCellClick = (i) => {
-    const current = history.slice(0, stepNumber + 1).reverse()[0];
-    const player = xIsNext ? "x" : "o";
+    socket.emit("playerMove", i);
+    // const current = history.slice(0, stepNumber + 1).reverse()[0];
+    // const player = xIsNext ? "x" : "o";
 
-    const newSquares = [...current.squares];
-    if (current.winner || newSquares[i]) {
-      return;
-    }
-    newSquares[i] = player;
-    const move = { x: i % gameSize, y: Math.floor(i / gameSize) };
-    const winMoves = calculateWinner(newSquares, winSteps, i, player);
-    const winner = winMoves.length !== 0 ? player : null;
+    // const newSquares = [...current.squares];
+    // if (current.winner || newSquares[i]) {
+    //   return;
+    // }
+    // newSquares[i] = player;
+    // const move = { x: i % gameSize, y: Math.floor(i / gameSize) };
+    // const winMoves = calculateWinner(newSquares, winSteps, i, player);
+    // const winner = winMoves.length !== 0 ? player : null;
 
-    const droppedHistory = history.slice(0, stepNumber + 1);
-
-    setHistory([
-      ...droppedHistory,
-      {
-        squares: newSquares,
-        winner,
-        winMoves,
-        move,
-      },
-    ]);
-    setStepNumber(droppedHistory.length);
-    setPlayer(!xIsNext);
+    // const droppedHistory = history.slice(0, stepNumber + 1);
+    // setHistory([
+    //   ...droppedHistory,
+    //   {
+    //     squares: newSquares,
+    //     winner,
+    //     winMoves,
+    //     move,
+    //   },
+    // ]);
+    // setStepNumber(droppedHistory.length);
+    // setPlayer(!xIsNext);
   };
+
+  useEffect(() => {
+    socket.on("playerMove", (i) => {
+      const current = history.slice(0, stepNumber + 1).reverse()[0];
+      const player = xIsNext ? "x" : "o";
+
+      const newSquares = [...current.squares];
+      if (current.winner || newSquares[i]) {
+        return;
+      }
+      newSquares[i] = player;
+      const move = { x: i % gameSize, y: Math.floor(i / gameSize) };
+      const winMoves = calculateWinner(newSquares, winSteps, i, player);
+      const winner = winMoves.length !== 0 ? player : null;
+
+      const droppedHistory = history.slice(0, stepNumber + 1);
+      setHistory([
+        ...droppedHistory,
+        {
+          squares: newSquares,
+          winner,
+          winMoves,
+          move,
+        },
+      ]);
+      setStepNumber(droppedHistory.length);
+      setPlayer(!xIsNext);
+    });
+    return () => {
+      socket.off("playerMove");
+    };
+  }, [socket, stepNumber, history, xIsNext]);
 
   const jumpTo = (step) => {
     if (step !== stepNumber) {
