@@ -13,7 +13,7 @@ import Image from "material-ui-image";
 
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import Cup from "./../icons/cup.png";
+
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.primary.main,

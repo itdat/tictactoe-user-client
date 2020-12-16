@@ -72,8 +72,7 @@ export default function Login({ history }) {
 
   // Listen if user is authenticated
   useEffect(() => {
-    if (isAuthenticated) {
-      history.push("/");
+    if (isAuthenticated && user) {
       socket.emit("setStatus", { name: user.username, status: 1 }, (err) => {
         if (err) {
           alert(err);
@@ -90,7 +89,7 @@ export default function Login({ history }) {
       clearErrors();
     }
     // eslint-disable-next-line
-  }, [error, isAuthenticated, history]);
+  }, [error, isAuthenticated, user, history]);
 
   // Handle input change
   const handleInputChange = (e) => {
@@ -108,15 +107,6 @@ export default function Login({ history }) {
         username,
         password,
       });
-
-      // socket.emit("setStatus", { name: username, status: 1 }, (error) => {
-      //   if (error) {
-      //     alert(error);
-      //   } else {
-      //     localStorage.setItem("currentName", username);
-      //     history.push("/");
-      //   }
-      // });
     }
   };
 
