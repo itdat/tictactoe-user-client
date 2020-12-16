@@ -16,7 +16,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 
-import { ThemeContext } from '../App';
+import { ThemeContext } from "../App";
 import OnlineListWrapper from "../components/OnlineListWrapper";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,9 +45,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login({ history }) {
-  const socket = useContext(ThemeContext)
+  const socket = useContext(ThemeContext);
   const classes = useStyles();
-  // console.log('[Login] socket = ', socket);
 
   const [formData, setFormData] = useState({ username: "", password: "" });
 
@@ -72,18 +71,17 @@ export default function Login({ history }) {
     };
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/users/login`,
+        `${process.env.REACT_APP_API_URL}/api/auth`,
         data,
         config
       );
       if (res.status === 200) {
-        socket.emit('setStatus', { name: username, status: 1 }, (error) => {
+        socket.emit("setStatus", { name: username, status: 1 }, (error) => {
           if (error) {
             alert(error);
           } else {
             // save cache to localStorage by hook
-            localStorage.setItem('currentName', username);
-
+            localStorage.setItem("currentName", username);
             history.push("/");
           }
         });
@@ -103,7 +101,7 @@ export default function Login({ history }) {
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
-        </Typography>
+          </Typography>
           <form className={classes.form} noValidate>
             <TextField
               variant="outlined"
@@ -144,7 +142,7 @@ export default function Login({ history }) {
               onClick={handleLogin}
             >
               Sign In
-          </Button>
+            </Button>
             <Grid container>
               <Grid item xs>
                 <Link
@@ -153,10 +151,14 @@ export default function Login({ history }) {
                   variant="body2"
                 >
                   Forgot password?
-              </Link>
+                </Link>
               </Grid>
               <Grid item>
-                <Link style={{ color: "inherit" }} to="/sign-up" variant="body2">
+                <Link
+                  style={{ color: "inherit" }}
+                  to="/sign-up"
+                  variant="body2"
+                >
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
