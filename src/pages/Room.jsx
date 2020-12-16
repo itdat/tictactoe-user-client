@@ -31,14 +31,14 @@ const Room = ({ location }) => {
     });
   }, [socket, location.search]);
 
-  return <Grid container>
+  return room ? (<Grid container>
     <Grid item lg={8} xs={12}>
       <Game />
     </Grid>
     <Grid item lg={4} xs={12}>
       <Chat name={name} room={room} />
     </Grid>
-  </Grid>;
+  </Grid>) : <h5>There is no game for you. Please select a room!</h5>;
 };
 
 export default Room;

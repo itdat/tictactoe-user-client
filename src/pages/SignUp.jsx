@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   CssBaseline,
   Avatar,
@@ -13,8 +13,9 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
+import AuthContext from "../context/auth/authContext";
+import { ThemeContext } from "../App";
 import OnlineListWrapper from "../components/OnlineListWrapper";
 
 const useStyles = makeStyles((theme) => ({
@@ -44,46 +45,62 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp({ history }) {
   const classes = useStyles();
+  const socket = useContext(ThemeContext);
 
+  // Use auth context
+  const authContext = useContext(AuthContext);
+  const {
+    loginOAuth,
+    register,
+    error,
+    clearErrors,
+    isAuthenticated,
+  } = authContext;
+
+  // Init form data
   const [formData, setFormData] = useState({
     fullname: "",
     username: "",
     password: "",
   });
 
+  // Get form data
+  const { fullname, username, password } = formData;
+
+  // Listen if user is authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      socket.emit("setStatus", { name: username, status: 1 }, (error) => {
+        if (error) {
+          alert(error);
+        } else {
+          localStorage.setItem("currentName", username);
+          history.push("/");
+        }
+      });
+    }
+
+    if (error) {
+      alert(error);
+      // setAlert(error);
+      clearErrors();
+    }
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, history]);
+
+  // Handle input change
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSignUp = async (e) => {
+  // Handle form submit
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const fullname = formData.fullname;
-    const username = formData.username;
-    const password = formData.password;
-    const data = {
-      name: fullname,
+    register({
+      fullname,
       username,
       password,
-      password_confirm: password
-    };
-    try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/users/register`,
-        data,
-        config
-      );
-      if (res.status === 200) {
-        localStorage.setItem("username", username);
-        history.push("/");
-      }
-    } catch (err) {
-      console.log(err);
-    }
+    });
   };
 
   return (
@@ -96,7 +113,7 @@ export default function SignUp({ history }) {
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
-        </Typography>
+          </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -141,7 +158,9 @@ export default function SignUp({ history }) {
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
+                  control={
+                    <Checkbox value="allowExtraEmails" color="primary" />
+                  }
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid>
@@ -151,15 +170,15 @@ export default function SignUp({ history }) {
               fullWidth
               variant="contained"
               className={classes.submit}
-              onClick={handleSignUp}
+              onClick={handleSubmit}
             >
               Sign Up
-          </Button>
+            </Button>
             <Grid container justify="flex-end">
               <Grid item>
                 <Link style={{ color: "inherit" }} to="/login" variant="body2">
                   Already have an account? Sign in
-              </Link>
+                </Link>
               </Grid>
             </Grid>
           </form>

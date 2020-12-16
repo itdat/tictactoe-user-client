@@ -11,6 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -34,10 +35,13 @@ const useStyles = makeStyles({
 const History = () => {
   const classes = useStyles();
   const [rows, setRows] = useState([]);
+  const history = useHistory();
   const username = "nvh";
-
-  const handleRowClick = (match)=>{
-    
+  const [name] = useState(
+    localStorage.getItem('currentName') || ''
+  );
+  const handleRowClick = (name,match)=>{
+    history.push('/room');
   }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
@@ -45,11 +49,8 @@ const History = () => {
     const res = await axios(
         `http://localhost:5000/users/history/${username}`
       );
-    console.log(res);
-    console.log(...rows,res.data);
-    setRows(...rows,res.data);
-    console.log(rows);
-  },[]);
+    setRows([...res.data]);
+  },[rows.id]);
 
 
   return (
@@ -66,24 +67,16 @@ const History = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.length?rows.map((row) => (
+            {rows.map((row) => (
               <StyledTableRow key={row.id} hover="true" >
                 <StyledTableCell component="th" scope="row" onClick = {handleRowClick}>
-                  {row.id!==null?row.id:""}
+                  {row._id}
                 </StyledTableCell>
                 <StyledTableCell>{row.result===true?"Thắng":"Thua"}</StyledTableCell>
                 <StyledTableCell>{row.competitor}</StyledTableCell>
                 <StyledTableCell>{row.date}</StyledTableCell>
               </StyledTableRow>
-            )):(
-            <StyledTableRow >
-              <StyledTableCell >
-              </StyledTableCell>
-              <StyledTableCell></StyledTableCell>
-              <StyledTableCell></StyledTableCell>
-              <StyledTableCell></StyledTableCell>
-            </StyledTableRow>
-          )}
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
