@@ -70,6 +70,7 @@ const App = () => {
                 </div>
               </ThemeContext.Provider>
             </ResponsiveDrawer>
+            <Alert />
           </Fragment>
         </AuthState>
       </AlertState>
