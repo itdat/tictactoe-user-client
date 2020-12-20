@@ -1,6 +1,6 @@
 import OnlineListWrapper from "../components/OnlineListWrapper";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -13,6 +13,7 @@ import Image from "material-ui-image";
 
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import AuthContext from "../context/auth/authContext";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -34,11 +35,13 @@ const useStyles = makeStyles({
 });
 
 const History = () => {
+  const { user } = useContext(AuthContext);
+  const [name] = useState(user?.username ?? '');
+
   const classes = useStyles();
   const [rows, setRows] = useState([]);
   const history = useHistory();
   //const username = "nvh";
-  const [name] = useState(localStorage.getItem("currentName") || "");
 
   const handleRowClick = (e) => {
     history.push("/room");

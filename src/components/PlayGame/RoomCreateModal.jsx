@@ -14,6 +14,7 @@ import {
 
 import { ThemeContext } from '../../App';
 import "./css/styles.css";
+import AuthContext from "../../context/auth/authContext";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -41,12 +42,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RoomCreateModal = ({ close, onClick }) => {
+  const { user } = useContext(AuthContext);
+  const [name] = useState(user?.username ?? '');
+
   const classes = useStyles();
   const socket = useContext(ThemeContext)
 
-  const [name] = useState(
-    localStorage.getItem('currentName') || ''
-  );
   const [formData, setFormData] = useState({ room: socket.id, level: 0 });
 
   const handleInputChange = (e) => {

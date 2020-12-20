@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from "react-router-dom";
 
@@ -11,6 +11,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Avatar from '@material-ui/core/Avatar';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Rating from '@material-ui/lab/Rating';
+import AuthContext from "../../context/auth/authContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -112,11 +113,11 @@ const useStyles = makeStyles((theme) => ({
 ]; */
 
 export default function RoomListView({ rooms }) {
+  const { user } = useContext(AuthContext);
+  const [username] = useState(user?.username ?? '');
+
   const classes = useStyles();
   const history = useHistory();
-  const [username] = useState(
-    localStorage.getItem('currentName') || ''
-  );
 
   const goToRoom = (name, room, level) => {
     history.push(`/room?name=${name}&room=${room}&level=${level}`);

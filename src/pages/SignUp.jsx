@@ -74,7 +74,6 @@ export default function SignUp({ history }) {
         if (error) {
           alert(error);
         } else {
-          localStorage.setItem("currentName", username);
           history.push("/");
         }
       });

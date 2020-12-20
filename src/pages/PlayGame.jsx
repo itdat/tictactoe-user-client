@@ -16,6 +16,7 @@ import RoomCreateModal from "../components/PlayGame/RoomCreateModal"
 import OnlineListWrapper from "../components/OnlineListWrapper";
 import Popups from "../components/Display/Popups";
 import { ThemeContext } from '../App';
+import AuthContext from "../context/auth/authContext";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -24,11 +25,12 @@ const useStyles = makeStyles(() => ({
 }));
 
 const PlayGame = () => {
+  const { user } = useContext(AuthContext);
+  const [name] = useState(user?.username ?? '');
+  
   const classes = useStyles();
   const history = useHistory();
-  const [name] = useState(
-    localStorage.getItem('currentName') || ''
-  );
+
   const socket = useContext(ThemeContext);
   const [roomItems, setRoomItems] = useState([]);
 
@@ -68,13 +70,13 @@ const PlayGame = () => {
             : (Popups.Information("Please login!", close = { close }))}
         </Popup>
       </Grid>
-      {roomItems && roomItems.length !== 0 
-      ? (<Card className={classes.card} style={{ marginTop: "15px" }}>
-        <CardContent style={{ padding: "18px" }}>
-          <GameRoomListView rooms={roomItems} />
-        </CardContent>
-      </Card>)
-      : <h5 style={{ marginTop: "50px" }}>There are no game rooms at this time.</h5>}
+      {roomItems && roomItems.length !== 0
+        ? (<Card className={classes.card} style={{ marginTop: "15px" }}>
+          <CardContent style={{ padding: "18px" }}>
+            <GameRoomListView rooms={roomItems} />
+          </CardContent>
+        </Card>)
+        : <h5 style={{ marginTop: "50px" }}>There are no game rooms at this time.</h5>}
     </OnlineListWrapper>
   </Fragment>;
 };

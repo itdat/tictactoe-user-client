@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
+
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -84,6 +86,7 @@ function ResponsiveDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const history = useHistory();
 
   // Use auth context
   const authContext = useContext(AuthContext);
@@ -92,6 +95,12 @@ function ResponsiveDrawer(props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const handleLogout = () => {
+    logout();
+    history.push('/login');
+    
+  }
 
   const drawer = (
     <div>
@@ -187,7 +196,7 @@ function ResponsiveDrawer(props) {
       <Divider />
       <List>
         {/* <Link to="/logout" className={classes.link}> */}
-        <ListItem button onClick={logout}>
+        <ListItem button onClick={handleLogout}>
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>

@@ -82,7 +82,6 @@ export default function Login({ history }) {
         if (err) {
           alert(err);
         } else {
-          localStorage.setItem("currentName", user.username);
           history.push("/");
         }
       });
