@@ -5,6 +5,7 @@ import "./style.css";
 import setAuthToken from "./utils/setAuthToken";
 
 import AuthState from "./context/auth/AuthState";
+import AlertState from "./context/alert/AlertState";
 
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
@@ -43,32 +44,33 @@ const App = () => {
 
   return (
     <Router>
-      <AuthState>
-        <Fragment>
-          <ResponsiveDrawer>
-            <ThemeContext.Provider value={socket}>
-              <div className={classes.content}>
-                <Switch>
-                  <Route exact path="/" component={Home} />
-                  {/* Authenticate */}
-                  <Route exact path="/login" component={Login} />
-                  <Route exact path="/sign-up" component={SignUp} />
-                  <Route exact path="/logout" component={Logout} />
-                  {/*  */}
-                  <Route path="/profiles" component={Profiles} />
-                  <Route exact path="/play-game" component={PlayGame} />
-                  <Route exact path="/room" component={Room} />
-                  <Route exact path="/rank" component={Rank} />
-                  <Route exact path="/online" component={Online} />
-                  <Route exact path="/guide" component={Guide} />
-                  <Route exact path="/history" component={History} />
-                  
-                </Switch>
-              </div>
-            </ThemeContext.Provider>
-          </ResponsiveDrawer>
-        </Fragment>
-      </AuthState>
+      <AlertState>
+        <AuthState>
+          <Fragment>
+            <ResponsiveDrawer>
+              <ThemeContext.Provider value={socket}>
+                <div className={classes.content}>
+                  <Switch>
+                    <Route exact path="/" component={Home} />
+                    {/* Authenticate */}
+                    <Route exact path="/login" component={Login} />
+                    <Route exact path="/sign-up" component={SignUp} />
+                    <Route exact path="/logout" component={Logout} />
+                    {/*  */}
+                    <Route path="/profiles" component={Profiles} />
+                    <Route exact path="/play-game" component={PlayGame} />
+                    <Route exact path="/room" component={Room} />
+                    <Route exact path="/rank" component={Rank} />
+                    <Route exact path="/online" component={Online} />
+                    <Route exact path="/guide" component={Guide} />
+                    <Route exact path="/history" component={History} />
+                  </Switch>
+                </div>
+              </ThemeContext.Provider>
+            </ResponsiveDrawer>
+          </Fragment>
+        </AuthState>
+      </AlertState>
     </Router>
   );
 };
