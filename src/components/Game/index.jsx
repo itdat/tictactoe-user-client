@@ -24,30 +24,6 @@ const Game = () => {
 
   const handleCellClick = (i) => {
     socket.emit("playerMove", i);
-    // const current = history.slice(0, stepNumber + 1).reverse()[0];
-    // const player = xIsNext ? "x" : "o";
-
-    // const newSquares = [...current.squares];
-    // if (current.winner || newSquares[i]) {
-    //   return;
-    // }
-    // newSquares[i] = player;
-    // const move = { x: i % gameSize, y: Math.floor(i / gameSize) };
-    // const winMoves = calculateWinner(newSquares, winSteps, i, player);
-    // const winner = winMoves.length !== 0 ? player : null;
-
-    // const droppedHistory = history.slice(0, stepNumber + 1);
-    // setHistory([
-    //   ...droppedHistory,
-    //   {
-    //     squares: newSquares,
-    //     winner,
-    //     winMoves,
-    //     move,
-    //   },
-    // ]);
-    // setStepNumber(droppedHistory.length);
-    // setPlayer(!xIsNext);
   };
 
   useEffect(() => {

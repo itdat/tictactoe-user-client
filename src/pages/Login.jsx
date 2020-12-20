@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import AuthContext from "../context/auth/authContext";
+import AlertContext from "../context/alert/alertContext";
 
 import { ThemeContext } from "../App";
 import OnlineListWrapper from "../components/OnlineListWrapper";
@@ -59,6 +60,10 @@ export default function Login({ history }) {
     user,
   } = authContext;
 
+  // Use alert context
+  const alertContext = useContext(AlertContext);
+  const { alerts, setAlert } = alertContext;
+
   // Init form data
   const [formData, setFormData] = useState({ username: "", password: "" });
 
@@ -84,8 +89,7 @@ export default function Login({ history }) {
     }
 
     if (error === "Invalid Credentials") {
-      // setAlert(error, "danger");
-      alert(error);
+      setAlert(error, "danger");
       clearErrors();
     }
     // eslint-disable-next-line

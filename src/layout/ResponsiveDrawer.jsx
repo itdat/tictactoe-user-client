@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -18,7 +18,7 @@ import AssessmentIcon from "@material-ui/icons/Assessment";
 import AnnouncementIcon from "@material-ui/icons/Announcement";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
-import HistoryIcon from '@material-ui/icons/History';
+import HistoryIcon from "@material-ui/icons/History";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -27,6 +27,8 @@ import Logo from "../images/Logo.svg";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
+
+import AuthContext from "../context/auth/authContext";
 
 const drawerWidth = 240;
 
@@ -82,6 +84,10 @@ function ResponsiveDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  // Use auth context
+  const authContext = useContext(AuthContext);
+  const { logout } = authContext;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -145,7 +151,7 @@ function ResponsiveDrawer(props) {
         <Link to="/guide" className={classes.link}>
           <ListItem button>
             <ListItemIcon>
-              <AnnouncementIcon />  
+              <AnnouncementIcon />
             </ListItemIcon>
             <ListItemText primary="Guide" />
           </ListItem>
@@ -180,14 +186,14 @@ function ResponsiveDrawer(props) {
       </List>
       <Divider />
       <List>
-        <Link to="/logout" className={classes.link}>
-          <ListItem button>
-            <ListItemIcon>
-              <ExitToAppIcon />
-            </ListItemIcon>
-            <ListItemText primary="Logout" />
-          </ListItem>
-        </Link>
+        {/* <Link to="/logout" className={classes.link}> */}
+        <ListItem button onClick={logout}>
+          <ListItemIcon>
+            <ExitToAppIcon />
+          </ListItemIcon>
+          <ListItemText primary="Logout" />
+        </ListItem>
+        {/* </Link> */}
       </List>
     </div>
   );

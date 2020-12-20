@@ -4,6 +4,8 @@ import "./App.css";
 import "./style.css";
 import setAuthToken from "./utils/setAuthToken";
 
+import Alert from "./components/Alert";
+
 import AuthState from "./context/auth/AuthState";
 import AlertState from "./context/alert/AlertState";
 
