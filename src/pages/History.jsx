@@ -16,6 +16,7 @@ import RoomSearchHeader from "../components/PlayGame/RoomSearchHeader";
 import Typography from "@material-ui/core/Typography";
 import Trophy from "../images/trophy.svg";
 import Defeat from "../images/loser.jpg";
+import Draw from "../images/drawn.svg";
 
 import axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -92,26 +93,34 @@ const History = () => {
             {rows.map((row) => (
               <StyledTableRow key={row.id} hover onClick={handleRowClick}>
                 <StyledTableCell style={{ padding: 5 }}>
-                  {row.result === true ? (
+                  {row.result === 1 ? (
                     <Image src={Trophy} />
-                  ) : (
+                  ) : (row.result === 2 ? (
+                    <Image src={Draw} />
+                  ):(
                     <Image src={Defeat} />
-                  )}
+                  ))}
                 </StyledTableCell>
                 <StyledTableCell>
-                  {row.result === true ? (
+                  {row.result === 1 ? (
                     <Typography
                       style={{ color: "#64b5f6", fontWeight: "bold" }}
                     >
                       Victory
                     </Typography>
-                  ) : (
+                  ) : (row.result === 2 ? (
+                    <Typography
+                      style={{ color: "#fd9630", fontWeight: "bold" }}
+                    >
+                      Draw
+                    </Typography>
+                  ):(
                     <Typography
                       style={{ color: "#f44336", fontWeight: "bold" }}
                     >
                       Defeat
                     </Typography>
-                  )}
+                  ))}
                 </StyledTableCell>
                 <StyledTableCell>{row.room}</StyledTableCell>
                 <StyledTableCell>

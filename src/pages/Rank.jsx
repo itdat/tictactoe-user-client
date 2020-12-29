@@ -8,12 +8,14 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Image from "material-ui-image";
+import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import UserSearchHeader from "../components/Rank/UserSearchHeader";
 import SecondPrize from "../images/second-prize.png";
 import FirstPrize from "../images/first-prize.svg";
 import ThirdPrize from "../images/third-prize.svg";
 import Box from "@material-ui/core/Box";
+
 
 import axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -66,11 +68,22 @@ const Rank = () => {
       <Grid
         container
         direction="row"
-        justify="flex-end"
+        justify="flex-start"
         alignItems="center"
         style={{ marginTop: "25px", marginBottom: "25px" }}
       >
+        <Grid item xs={4}>
+          <Paper variant="outlined" style={{padding:10,  borderColor: "gray"}}>
+            <Typography >User: <span style={{fontSize:"150%", fontWeight:"bold"}}>Name</span></Typography>
+            <Typography>Rank: 1</Typography>
+            <Typography>Match: 500</Typography>
+            <Typography>Cup: 5</Typography>
+            <Typography>Win ratio: 50%</Typography>
+            </Paper>
+        </Grid>
+        <Grid item xs={8} container justify="flex-end" alignItems="center">
         <UserSearchHeader />
+        </Grid>
       </Grid>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="customized table">
