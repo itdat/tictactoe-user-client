@@ -20,7 +20,7 @@ const Room = ({ location }) => {
   useEffect(() => {
     const { name, room, roomName, level } = queryString.parse(location.search);
 
-    setRoom(room);
+    setRoom(roomName);
     setName(name);
     setLevel(level);
 
@@ -38,7 +38,7 @@ const Room = ({ location }) => {
       <Game />
     </Grid>
     <Grid item lg={4} xs={12}>
-      <Chat name={name} room={room} />
+      <Chat name={room} room={room} />
     </Grid>
   </Grid>) : <h5>There is no game for you. Please select a room!</h5>;
 };
