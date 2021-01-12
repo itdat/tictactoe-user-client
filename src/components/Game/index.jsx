@@ -23,40 +23,89 @@ const Game = () => {
   const [isAsc, setSort] = useState(false);
 
   const handleCellClick = (i) => {
-    socket.emit("playerMove", i);
+    const current = history.slice(0, stepNumber + 1).reverse()[0];
+    const player = xIsNext ? "x" : "o";
+
+    const newSquares = [...current.squares];
+    if (current.winner || newSquares[i]) {
+      return;
+    }
+    newSquares[i] = player;
+    const move = { x: i % gameSize, y: Math.floor(i / gameSize) };
+    const winMoves = calculateWinner(newSquares, winSteps, i, player);
+    const winner = winMoves.length !== 0 ? player : null;
+    // socket.emit("playerMove", i);
+    console.log("handleCellClick");
+
+    // const current = history.slice(0, stepNumber + 1).reverse()[0];
+    // const player = xIsNext ? "x" : "o";
+
+    const droppedHistory = history.slice(0, stepNumber + 1);
+    // const newSquares = [...current.squares];
+    // if (current.winner || newSquares[i]) {
+    //   return;
+    // }
+    // newSquares[i] = player;
+    // const move = { x: i % gameSize, y: Math.floor(i / gameSize) };
+    // const winMoves = calculateWinner(newSquares, winSteps, i, player);
+    // const winner = winMoves.length !== 0 ? player : null;
+
+    setHistory([
+      ...droppedHistory,
+      {
+        squares: newSquares,
+        winner,
+        winMoves,
+        move,
+      },
+    ]);
+    setStepNumber(droppedHistory.length);
+    setPlayer(!xIsNext);
+    // const droppedHistory = history.slice(0, stepNumber + 1);
+    // setHistory([
+    //   ...droppedHistory,
+    //   {
+    //     squares: newSquares,
+    //     winner,
+    //     winMoves,
+    //     move,
+    //   },
+    // ]);
+    // setStepNumber(droppedHistory.length);
+    // setPlayer(!xIsNext);
   };
 
-  useEffect(() => {
-    socket.on("playerMove", (i) => {
-      const current = history.slice(0, stepNumber + 1).reverse()[0];
-      const player = xIsNext ? "x" : "o";
-
-      const newSquares = [...current.squares];
-      if (current.winner || newSquares[i]) {
-        return;
-      }
-      newSquares[i] = player;
-      const move = { x: i % gameSize, y: Math.floor(i / gameSize) };
-      const winMoves = calculateWinner(newSquares, winSteps, i, player);
-      const winner = winMoves.length !== 0 ? player : null;
-
-      const droppedHistory = history.slice(0, stepNumber + 1);
-      setHistory([
-        ...droppedHistory,
-        {
-          squares: newSquares,
-          winner,
-          winMoves,
-          move,
-        },
-      ]);
-      setStepNumber(droppedHistory.length);
-      setPlayer(!xIsNext);
-    });
-    return () => {
-      socket.off("playerMove");
-    };
-  }, [socket, stepNumber, history, xIsNext]);
+  // useEffect(() => {
+  //   socket.on("playerMove", (i) => {
+  //     const current = history.slice(0, stepNumber + 1).reverse()[0];
+  //     const player = xIsNext ? "x" : "o";
+  // 
+  //     const newSquares = [...current.squares];
+  //     if (current.winner || newSquares[i]) {
+  //       return;
+  //     }
+  //     newSquares[i] = player;
+  //     const move = { x: i % gameSize, y: Math.floor(i / gameSize) };
+  //     const winMoves = calculateWinner(newSquares, winSteps, i, player);
+  //     const winner = winMoves.length !== 0 ? player : null;
+  // 
+  //     const droppedHistory = history.slice(0, stepNumber + 1);
+  //     setHistory([
+  //       ...droppedHistory,
+  //       {
+  //         squares: newSquares,
+  //         winner,
+  //         winMoves,
+  //         move,
+  //       },
+  //     ]);
+  //     setStepNumber(droppedHistory.length);
+  //     setPlayer(!xIsNext);
+  //   });
+  //   return () => {
+  //     socket.off("playerMove");
+  //   };
+  // }, [socket, stepNumber, history, xIsNext]);
 
   const jumpTo = (step) => {
     if (step !== stepNumber) {
@@ -78,15 +127,15 @@ const Game = () => {
   const status = current.winner
     ? "Winner: "
     : checkedCells < gameSize * gameSize
-    ? "Next player: "
-    : "No winner!";
+      ? "Next player: "
+      : "No winner!";
   const player = current.winner
     ? current.winner
     : checkedCells < gameSize * gameSize
-    ? xIsNext
-      ? "x"
-      : "o"
-    : "";
+      ? xIsNext
+        ? "x"
+        : "o"
+      : "";
   return (
     <React.Fragment>
       <section id="main-content">

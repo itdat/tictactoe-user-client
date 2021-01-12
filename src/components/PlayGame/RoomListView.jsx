@@ -119,14 +119,14 @@ export default function RoomListView({ rooms }) {
   const classes = useStyles();
   const history = useHistory();
 
-  const goToRoom = (name, room, level) => {
-    history.push(`/room?name=${name}&room=${room}&level=${level}`);
+  const goToRoom = (name, room, roomName, level) => {
+    history.push(`/room?name=${name}&room=${room}&roomName=${roomName}&level=${level}`);
   };
 
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        {rooms.map(({ gamers, id, level, name, participants, status }) => (
+        {rooms.map(({ id, level, name, players, guests, status, boardHistory }) => (
           <Grid item xs={4} spacing={3} key={uuid()}>
             <Container className={classes.cardItem}>
               <Grid item>
@@ -139,7 +139,7 @@ export default function RoomListView({ rooms }) {
                     width: "100%",
                   }}
                   onClick={() => {
-                    goToRoom(username, name, level)
+                    goToRoom(username, id, name, level)
                   }}
                 >
                   <span
@@ -187,7 +187,7 @@ export default function RoomListView({ rooms }) {
                   </Grid>)
                   : (<Grid item>
                     <AvatarGroup max={4}>
-                      {[...Array(participants)].map((e, i) => (
+                      {[...Array([...guests, ...players])].map((e, i) => (
                         <Avatar key={i} alt="" src="" />
                       ))}
                     </AvatarGroup>

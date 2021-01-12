@@ -48,7 +48,7 @@ const RoomCreateModal = ({ close, onClick }) => {
   const classes = useStyles();
   const socket = useContext(ThemeContext)
 
-  const [formData, setFormData] = useState({ room: socket.id, level: 0 });
+  const [formData, setFormData] = useState({ room: socket.id, level: 3 });
 
   const handleInputChange = (e) => {
     if (e.target.name === 'level') {
@@ -79,11 +79,23 @@ const RoomCreateModal = ({ close, onClick }) => {
             required
             fullWidth
             id="room"
-            label={formData.room === "" ? "Room" : ""}
+            label="CODE"
             value={formData.room}
             onChange={handleInputChange}
             name="room"
             autoComplete="room"
+            autoFocus
+          />
+          <TextField
+            variant="outlined"
+            className={classes.inputField}
+            required
+            fullWidth
+            id="roomName"
+            onChange={handleInputChange}
+            label="Name"
+            name="roomName"
+            autoComplete="roomName"
             autoFocus
           />
           <Grid container xs={3} sm item className={classes.inputField}>
@@ -105,8 +117,8 @@ const RoomCreateModal = ({ close, onClick }) => {
             color="primary"
             className={classes.submit}
             onClick={() => {
-              const { room, level} = formData;
-              onClick(name, room, level);
+              const { room, roomName, level} = formData;
+              onClick(name, room, roomName, level);
               close();
             }}
           >

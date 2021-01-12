@@ -18,17 +18,19 @@ const Room = ({ location }) => {
   const socket = useContext(ThemeContext)
 
   useEffect(() => {
-    const { name, room, level } = queryString.parse(location.search);
+    const { name, room, roomName, level } = queryString.parse(location.search);
 
     setRoom(room);
     setName(name);
     setLevel(level);
 
-    socket.emit('joinRoom', { name, room, roomLevel: level }, (error) => {
-      if (error) {
-        console.log(error);
-      }
-    });
+    if (room) {
+      socket.emit('joinRoom', { roomId: room, roomName: roomName, roomLevel: level }, (error) => {
+        if (error) {
+          console.log(error);
+        }
+      });
+    }
   }, [socket, location.search]);
 
   return room ? (<Grid container>

@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
 const PlayGame = () => {
   const { user } = useContext(AuthContext);
   const [name] = useState(user?.username ?? '');
-  
+
   const classes = useStyles();
   const history = useHistory();
 
@@ -35,18 +35,16 @@ const PlayGame = () => {
   const [roomItems, setRoomItems] = useState([]);
 
   useEffect(() => {
-    // console.log("useEffect running");
     // Reload data 
     socket.emit('reloadRooms');
 
     socket.on('getRooms', ({ rooms }) => {
-      // console.log("getRooms", rooms);
       setRoomItems(rooms);
-    })
-  }, [socket]);
+    });
+  }, []);
 
-  const goToRoom = (name, room, level) => {
-    history.push(`/room?name=${name}&room=${room}&level=${level}`);
+  const goToRoom = (name, room, roomName, level) => {
+    history.push(`/room?name=${name}&room=${room}&roomName=${roomName}&level=${level}`);
   };
 
   return <Fragment>
@@ -76,7 +74,7 @@ const PlayGame = () => {
             <GameRoomListView rooms={roomItems} />
           </CardContent>
         </Card>)
-        : <h5 style={{ marginTop: "50px" }}>There are no game rooms at this time.</h5>}
+        : <h5 style={{ marginTop: "50px" }}>There are no result.</h5>}
     </OnlineListWrapper>
   </Fragment>;
 };
