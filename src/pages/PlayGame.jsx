@@ -13,6 +13,7 @@ import 'reactjs-popup/dist/index.css';
 import RoomSearchHeader from "../components/PlayGame/RoomSearchHeader";
 import GameRoomListView from "../components/PlayGame/RoomListView";
 import RoomCreateModal from "../components/PlayGame/RoomCreateModal"
+import RoomJoinModal from "../components/PlayGame/RoomJoinModal"
 import OnlineListWrapper from "../components/OnlineListWrapper";
 import Popups from "../components/Display/Popups";
 import { ThemeContext } from '../App';
@@ -39,6 +40,7 @@ const PlayGame = () => {
     socket.emit('reloadRooms');
 
     socket.on('getRooms', ({ rooms }) => {
+      console.log("room =", rooms);
       setRoomItems(rooms);
     });
   }, []);
@@ -57,16 +59,39 @@ const PlayGame = () => {
         alignItems="center"
         style={{ marginTop: "25px" }}
       >
-        <RoomSearchHeader />
-        <Popup
-          modal
-          lockScroll={true}
-          nested
-          trigger={<Button variant="contained" color="primary"> Create room </Button>}>
-          {close => name && name !== ''
-            ? (<RoomCreateModal close={close} onClick={goToRoom} />)
-            : (Popups.Information("Please login!", close = { close }))}
-        </Popup>
+        <Grid item>
+          <RoomSearchHeader />
+        </Grid>
+
+        <Grid item xs={12} sm container justify="flex-end">
+          <Popup
+            modal
+            lockScroll={true}
+            nested
+            trigger={<Button
+              variant="contained"
+              color="secondary">
+              Join with CODE
+                      </Button>}>
+            {close => name && name !== ''
+              ? (<RoomJoinModal close={close} onClick={goToRoom} />)
+              : (Popups.Information("Please login!", close = { close }))}
+          </Popup>
+          <Popup
+            modal
+            lockScroll={true}
+            nested
+            trigger={<Button
+              variant="contained"
+              color="primary"
+              style={{ marginLeft: "12px" }}>
+              Create room
+                      </Button>}>
+            {close => name && name !== ''
+              ? (<RoomCreateModal close={close} onClick={goToRoom} />)
+              : (Popups.Information("Please login!", close = { close }))}
+          </Popup>
+        </Grid>
       </Grid>
       {roomItems && roomItems.length !== 0
         ? (<Card className={classes.card} style={{ marginTop: "15px" }}>
