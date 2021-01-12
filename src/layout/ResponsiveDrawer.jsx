@@ -96,10 +96,8 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleLogout = () => {
-    logout();
-    history.push('/login');
-    
+  const handleLogout = () => {    
+    history.push('/logout');
   }
 
   const drawer = (
@@ -195,14 +193,14 @@ function ResponsiveDrawer(props) {
       </List>
       <Divider />
       <List>
-        {/* <Link to="/logout" className={classes.link}> */}
+        <Link to="/logout" className={classes.link}>
         <ListItem button onClick={handleLogout}>
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>
           <ListItemText primary="Logout" />
         </ListItem>
-        {/* </Link> */}
+        </Link>
       </List>
     </div>
   );

@@ -19,7 +19,7 @@ const Home = ({ history }) => {
   // Listen if user is authenticated
   useEffect(() => {
     if (isAuthenticated && user) {
-      socket.emit("setStatus", { name: user.username, status: 1 }, (err) => {
+      socket.emit("setOnlineStatus", { name: user.username }, (err) => {
         if (err) {
           alert(err);
         } else {

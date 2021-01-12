@@ -70,7 +70,7 @@ export default function SignUp({ history }) {
   // Listen if user is authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      socket.emit("setStatus", { name: username, status: 1 }, (error) => {
+      socket.emit("setOnlineStatus", { name: username }, (error) => {
         if (error) {
           alert(error);
         } else {
