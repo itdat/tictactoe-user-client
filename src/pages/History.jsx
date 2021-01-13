@@ -42,15 +42,15 @@ const useStyles = makeStyles({
 const loadData = (id, result, room, level, competitor, date) => {
   return { id, result, room, level, competitor, date };
 };
-// const rows = [
-//   loadData(1, true, "solo", 5, "nvh", "22/12/2020"),
-//   loadData(2, false, "play", 4, "ntd", "30/12/2020"),
-//   loadData(3, false, "hard", 3, "ntd", "30/12/2020"),
-//   loadData(4, true, "fun", 2, "ntd", "30/12/2020"),
-// ];
+const rows = [
+  loadData(1, 1, "solo", 5, "nvh", "22/12/2020"),
+  loadData(2, 2, "play", 4, "ntd", "30/12/2020"),
+  loadData(3, 3, "hard", 3, "ntd", "30/12/2020"),
+  loadData(4, 1, "fun", 2, "ntd", "30/12/2020"),
+];
 const History = () => {
   const classes = useStyles();
-  const [rows, setRows] = useState([]);
+  //const [rows, setRows] = useState([]);
   const history = useHistory();
   //const username = "nvh";
   const [name] = useState(localStorage.getItem("currentName") || "");
@@ -60,11 +60,11 @@ const History = () => {
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(async () => {
-    const res = await axios(`http://localhost:4000/users/history/${name}`);
-    console.log(res.data);
-    setRows([...res.data]);
-  }, [rows.id]);
+  // useEffect(async () => {
+  //   const res = await axios(`http://localhost:4000/users/history/${name}`);
+  //   console.log(res.data);
+  //   //setRows([...res.data]);
+  // }, [rows.id]);
   return (
     <OnlineListWrapper>
       <h1>History</h1>

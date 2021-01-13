@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function RoomSearchHeader() {
+export default function UserSearchHeader() {
   const classes = useStyles();
 
   return (
