@@ -43,10 +43,21 @@ const PlayGame = () => {
       console.log("room =", rooms);
       setRoomItems(rooms);
     });
+
+    socket.on('quickRoom', ({ room }) => {
+      console.log("quickRoom =", room);
+      if (room.host && room.player2) {
+        history.push(`/room?name=${name}&room=${room.id}&roomName=${room.name}&level=${room.level}`);
+      }
+    });
   }, []);
 
   const goToRoom = (name, room, roomName, level) => {
     history.push(`/room?name=${name}&room=${room}&roomName=${roomName}&level=${level}`);
+  };
+
+  const goToQuickGame = () => {
+    socket.emit('requestQuickGame');
   };
 
   return <Fragment>
@@ -64,13 +75,15 @@ const PlayGame = () => {
         </Grid>
 
         <Grid item xs={12} sm container justify="flex-end">
+          <Button variant="contained" color="secondary" onClick={goToQuickGame}>QUICK GAME</Button>
           <Popup
             modal
             lockScroll={true}
             nested
             trigger={<Button
               variant="contained"
-              color="secondary">
+              color="secondary"
+              style={{ marginLeft: "12px" }}>
               Join with CODE
                       </Button>}>
             {close => name && name !== ''
