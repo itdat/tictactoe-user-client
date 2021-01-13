@@ -22,6 +22,26 @@ const Game = () => {
   const [xIsNext, setPlayer] = useState(true);
   const [isAsc, setSort] = useState(false);
 
+  useEffect(() => {
+    socket.on('matchInfo', info => {
+      console.log("info =", info);
+      setHistory(info.data.history);
+      setStepNumber(info.data.stepNumber);
+      setPlayer(info.data.xIsNext);
+    });
+
+  }, [socket]);
+
+  const sendMatch = (match) => {
+    console.log("postData =", match);
+
+    socket.emit('sendMatchInfo', match, () => {
+      setHistory(match.history);
+      setStepNumber(match.stepNumber);
+      setPlayer(match.xIsNext);
+    });
+  };
+
   const handleCellClick = (i) => {
     const current = history.slice(0, stepNumber + 1).reverse()[0];
     const player = xIsNext ? "x" : "o";
@@ -50,17 +70,21 @@ const Game = () => {
     // const winMoves = calculateWinner(newSquares, winSteps, i, player);
     // const winner = winMoves.length !== 0 ? player : null;
 
-    setHistory([
-      ...droppedHistory,
-      {
-        squares: newSquares,
-        winner,
-        winMoves,
-        move,
-      },
-    ]);
-    setStepNumber(droppedHistory.length);
-    setPlayer(!xIsNext);
+    const match = {
+      history: [
+        ...droppedHistory,
+        {
+          squares: newSquares,
+          winner,
+          winMoves,
+          move,
+        },
+      ],
+      stepNumber: droppedHistory.length,
+      xIsNext: !xIsNext,
+    }
+
+    sendMatch(match);
     // const droppedHistory = history.slice(0, stepNumber + 1);
     // setHistory([
     //   ...droppedHistory,
@@ -153,7 +177,7 @@ const Game = () => {
               )
             }
           />
-          <div id="game-wrapper">
+          <div style={{pointerEvents: 'none', opacity: '0.55'}} id="game-wrapper">
             <Board
               winMoves={current.winMoves}
               squares={squares}
