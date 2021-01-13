@@ -116,7 +116,9 @@ const RoomCreateModal = ({ close, onClick }) => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
+              
               const { room, roomName, level} = formData;
               onClick(name, room, roomName, level);
               close();

@@ -51,7 +51,7 @@ const History = () => {
     const res = await axios(`http://localhost:4000/users/history/${name}`);
     console.log(res.data);
     setRows([...res.data]);
-  }, [rows.id]);
+  }, [rows.id, name]);
 
   return (
     <OnlineListWrapper>

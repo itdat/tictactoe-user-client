@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import AuthContext from "../context/auth/authContext";
 
 import OnlineListWrapper from "../components/OnlineListWrapper";
@@ -14,10 +14,11 @@ const Logout = () => {
     }
     
     logout();
-  }, []);
+    // eslint-disable-next-line
+  }, [socket]);
 
   return <OnlineListWrapper>
-    {user ? (<h1>Logout</h1>) : (<h6>You have been logged out from system.</h6>)}
+    {user ? (<h1>Logout</h1>) : (<h6>You have been logged out..</h6>)}
   </OnlineListWrapper>;
 };
 

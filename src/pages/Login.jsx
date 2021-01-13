@@ -13,6 +13,7 @@ import {
 
 import { Link } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from "@material-ui/core/styles";
 import AuthContext from "../context/auth/authContext";
 import AlertContext from "../context/alert/alertContext";
@@ -62,7 +63,9 @@ export default function Login({ history }) {
 
   // Use alert context
   const alertContext = useContext(AlertContext);
+  // eslint-disable-next-line no-unused-vars
   const { alerts, setAlert } = alertContext;
+  const [message, setMessage] = useState({ open: false, text: "" });
 
   // Init form data
   const [formData, setFormData] = useState({ username: "", password: "" });
@@ -72,19 +75,25 @@ export default function Login({ history }) {
 
   useEffect(() => {
     loadUser();
+
+    if (isAuthenticated && user) {
+      if (message.text === "") {
+        showMessage("You are already logged in, you need to log out before logging in as different account.");
+      }
+    }
     // eslint-disable-next-line
   }, []);
 
   // Listen if user is authenticated
   useEffect(() => {
-    if (isAuthenticated && user) {
-      socket.emit("setOnlineStatus", { name: user.username }, (err) => {
-        if (err) {
-          alert(err);
-        } else {
-          history.push("/");
-        }
-      });
+    if (isAuthenticated && user && user.username !== "") {
+        socket.emit("setOnlineStatus", { name: user.username }, (err) => {
+          if (err) {
+            alert(err);
+          } else {
+            history.push("/");
+          }
+        });
     }
 
     if (error === "Invalid Credentials") {
@@ -94,6 +103,18 @@ export default function Login({ history }) {
     // eslint-disable-next-line
   }, [error, isAuthenticated, user, history]);
 
+  const showMessage = (msg) => {
+    setMessage({ open: true, text: msg });
+
+    setTimeout(() => {
+      handleClose();
+    }, 5000)
+  };
+
+  const handleClose = () => {
+    setMessage({ open: false, text: "" });
+  };
+
   // Handle input change
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -102,14 +123,20 @@ export default function Login({ history }) {
   // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (username === "" || password === "") {
       // setAlert("Please fill in all fields");
       alert("Please fill in all fields");
     } else {
-      login({
+      const res = await login({
         username,
         password,
       });
+      if (res.success) {
+        showMessage("You have successfully logged in");
+      } else {
+        showMessage("Invalid Login Credentials");
+      }
     }
   };
 
@@ -186,6 +213,13 @@ export default function Login({ history }) {
               </Grid>
             </Grid>
           </form>
+          <Snackbar
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            open={message.open}
+            onClose={handleClose}
+            message={message.text}
+            key='login_toast'
+          />
         </div>
       </Container>
     </OnlineListWrapper>

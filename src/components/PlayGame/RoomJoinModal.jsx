@@ -2,17 +2,14 @@ import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import VideogameAsset from "@material-ui/icons/VideogameAsset";
-import Rating from '@material-ui/lab/Rating';
 import {
   Avatar,
   Button,
   CssBaseline,
   TextField,
-  Grid,
   Typography,
 } from "@material-ui/core";
 
-import { ThemeContext } from '../../App';
 import "./css/styles.css";
 import AuthContext from "../../context/auth/authContext";
 
@@ -46,7 +43,6 @@ const RoomJoinModal = ({ close, onClick }) => {
   const [name] = useState(user?.username ?? '');
 
   const classes = useStyles();
-  const socket = useContext(ThemeContext)
 
   const [formData, setFormData] = useState();
 
@@ -90,7 +86,9 @@ const RoomJoinModal = ({ close, onClick }) => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
+              
               const { room } = formData;
               onClick(name, room);
               close();

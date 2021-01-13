@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 
 import PropTypes from "prop-types";
@@ -29,8 +29,6 @@ import Logo from "../images/Logo.svg";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
-
-import AuthContext from "../context/auth/authContext";
 
 const drawerWidth = 240;
 
@@ -87,10 +85,6 @@ function ResponsiveDrawer(props) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const history = useHistory();
-
-  // Use auth context
-  const authContext = useContext(AuthContext);
-  const { logout } = authContext;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
