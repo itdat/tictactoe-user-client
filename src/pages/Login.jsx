@@ -18,7 +18,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import AuthContext from "../context/auth/authContext";
 import AlertContext from "../context/alert/alertContext";
 
-import { ThemeContext } from "../App";
 import OnlineListWrapper from "../components/OnlineListWrapper";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,14 +47,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login({ history }) {
   const classes = useStyles();
-  const socket = useContext(ThemeContext);
 
   // Use auth context
   const authContext = useContext(AuthContext);
   const {
     login,
     error,
-    clearErrors,
     isAuthenticated,
     loadUser,
     user,
@@ -82,33 +79,14 @@ export default function Login({ history }) {
       }
     }
     // eslint-disable-next-line
-  }, []);
-
-  // Listen if user is authenticated
-  useEffect(() => {
-    if (isAuthenticated && user && user.username !== "") {
-        socket.emit("setOnlineStatus", { name: user.username }, (err) => {
-          if (err) {
-            alert(err);
-          } else {
-            history.push("/");
-          }
-        });
-    }
-
-    if (error === "Invalid Credentials") {
-      setAlert(error, "danger");
-      clearErrors();
-    }
-    // eslint-disable-next-line
-  }, [error, isAuthenticated, user, history]);
+  }, [isAuthenticated, error]);
 
   const showMessage = (msg) => {
     setMessage({ open: true, text: msg });
 
     setTimeout(() => {
       handleClose();
-    }, 5000)
+    }, 4000)
   };
 
   const handleClose = () => {
@@ -133,7 +111,8 @@ export default function Login({ history }) {
         password,
       });
       if (res.success) {
-        showMessage("You have successfully logged in");
+        showMessage("You have successfully logged in. You will be redirected to homepage.");
+        setTimeout(() => history.push("/"), 4300);
       } else {
         showMessage("Invalid Login Credentials");
       }

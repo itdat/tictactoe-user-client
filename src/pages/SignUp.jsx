@@ -16,7 +16,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 
 import AuthContext from "../context/auth/authContext";
-import { ThemeContext } from "../App";
 import OnlineListWrapper from "../components/OnlineListWrapper";
 
 const useStyles = makeStyles((theme) => ({
@@ -46,15 +45,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp({ history }) {
   const classes = useStyles();
-  const socket = useContext(ThemeContext);
 
   // Use auth context
   const authContext = useContext(AuthContext);
   const {
-    user,
+    loadUser,
     register,
     error,
-    clearErrors,
     isAuthenticated,
   } = authContext;
 
@@ -72,33 +69,14 @@ export default function SignUp({ history }) {
   const [message, setMessage] = useState({ open: false, text: "" });
 
   useEffect(() => {
+    loadUser();
     if (isAuthenticated) {
       if (message.text === "") {
         showMessage("You are already logged in, you need to log out before registering for an account.");
       }
     }
     // eslint-disable-next-line
-  }, []);
-
-  // Listen if user is authenticated
-  useEffect(() => {
-    if (isAuthenticated && user && user.username !== "") {
-      socket.emit("setOnlineStatus", { name: username }, (error) => {
-        if (error) {
-          alert(error);
-        } else {
-          history.push("/");
-        }
-      });
-    }
-
-    if (error) {
-      alert(error);
-      // setAlert(error);
-      clearErrors();
-    }
-    // eslint-disable-next-line
-  }, [error, isAuthenticated, history]);
+  }, [isAuthenticated, error]);
 
   // Handle input change
   const handleInputChange = (e) => {
@@ -128,7 +106,7 @@ export default function SignUp({ history }) {
 
     setTimeout(() => {
       handleClose();
-    }, 5000)
+    }, 4000)
   };
 
   // Close toast

@@ -128,8 +128,8 @@ export default function RoomListView({ rooms }) {
     <div className={classes.root}>
       <Grid container spacing={3}>
         {rooms.filter((room) => room.status !== "quickly").map(({ id, level, name, host, player2, guests, status }) => (
-          <Grid item xs={4} spacing={3} key={uuid()}>
-            <Container className={classes.cardItem}>
+          <Grid item xs={4} key={uuid()}>
+            <Container spacing={3} className={classes.cardItem}>
               <Grid item>
                 <ButtonBase
                   focusRipple

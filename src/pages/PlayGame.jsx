@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useHistory } from "react-router-dom";
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -25,12 +24,11 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const PlayGame = () => {
+const PlayGame = (history) => {
   const { user } = useContext(AuthContext);
   const [name] = useState(user?.username ?? '');
 
   const classes = useStyles();
-  const history = useHistory();
 
   const socket = useContext(ThemeContext);
   const [roomItems, setRoomItems] = useState([]);
