@@ -8,6 +8,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import Tooltip from '@material-ui/core/Tooltip';
 import Avatar from '@material-ui/core/Avatar';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Rating from '@material-ui/lab/Rating';
@@ -126,7 +127,7 @@ export default function RoomListView({ rooms }) {
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        {rooms.map(({ id, level, name, players, guests, status, boardHistory }) => (
+        {rooms.map(({ id, level, name, host, player2, guests, status }) => (
           <Grid item xs={4} spacing={3} key={uuid()}>
             <Container className={classes.cardItem}>
               <Grid item>
@@ -179,16 +180,20 @@ export default function RoomListView({ rooms }) {
                 {status === 'waiting'
                   ? (<Grid item>
                     <div className={classes.flexGrid}>
-                      <Avatar alt="gamer 01" src="" ></Avatar>
+                      <Tooltip title={host?.name || ''}>
+                        <Avatar alt="gamer 01" src="" ></Avatar>
+                      </Tooltip>
                       <Typography variant="body2">
-                        Gamer#01
+                        Player 01
                       </Typography>
                     </div>
                   </Grid>)
                   : (<Grid item>
                     <AvatarGroup max={4}>
-                      {[...Array([...guests, ...players])].map((e, i) => (
-                        <Avatar key={i} alt="" src="" />
+                      {[host, player2, ...guests].map(({ name }, i) => (
+                        <Tooltip title={name}>
+                          <Avatar key={i} alt="avatar" src=""></Avatar>
+                        </Tooltip>
                       ))}
                     </AvatarGroup>
                   </Grid>)}
