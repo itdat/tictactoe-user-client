@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -24,9 +25,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const PlayGame = (history) => {
+const PlayGame = () => {
   const { user } = useContext(AuthContext);
   const [name] = useState(user?.username ?? '');
+  const history = useHistory();
 
   const classes = useStyles();
 
@@ -37,8 +39,8 @@ const PlayGame = (history) => {
     // Reload data 
     socket.emit('reloadRooms');
 
-    socket.on('getRooms', ({ rooms }) => {
-      console.log("[PlayGame] ..rooms =", rooms);
+    socket.on('roomList', ({ rooms }) => {
+      // console.log("[PlayGame] ..rooms =", rooms);
       setRoomItems(rooms);
     });
 

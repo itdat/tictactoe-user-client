@@ -11,13 +11,13 @@ const Logout = () => {
 
   useEffect(() => {
     if (user && socket) {
-      socket.emit("removeOnlineStatus", { name: user.username });
+      socket.emit('removeOnlineUser', { name: user.username });
     }
 
     logout();
 
     // Reload data because Sidebar cause error if online list component is located in different pages
-    socket.emit('reloadOnlineUsers');
+    socket.emit('reloadOnlineList');
     
     // eslint-disable-next-line
   }, [socket]);

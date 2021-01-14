@@ -7,7 +7,7 @@ import OnlineList from "../components/OnlineList";
 import { ThemeContext } from '../App';
 import AuthContext from "../context/auth/authContext";
 
-const OnlineListWrapper = ({ children}) => {
+const OnlineListWrapper = ({ children, isToggled = true }) => {
   const { user, isAuthenticated, error, clearErrors, loadUser } = useContext(AuthContext);
   const socket = useContext(ThemeContext)
 
@@ -19,11 +19,9 @@ const OnlineListWrapper = ({ children}) => {
   // Listen if user is authenticated
   useEffect(() => {
     if (isAuthenticated && user && user.username !== "") {
-      socket.emit("setOnlineStatus", { name: user.username }, (err) => {
+      socket.emit('loadOnlineUser', { name: user.username }, (err) => {
         if (err) {
-          alert(err);
-        } else {
-          // history.push("/play-game");
+          // console.log(err);
         }
       });
     }
@@ -33,23 +31,25 @@ const OnlineListWrapper = ({ children}) => {
       alert(error);
       clearErrors();
     }
-    
+
     // Reload data because Sidebar cause error if online list component is located in different pages
-    socket.emit('reloadOnlineUsers');
+    socket.emit('reloadOnlineList');
 
     // eslint-disable-next-line
   }, [error, isAuthenticated, user]);
 
-  return <Grid container style={{ margin: "-2rem" }}>
-    <Grid item lg={10} xs={12}>
-      <div style={{ margin: "2rem" }}>
-        {children}
-      </div>
+  return isToggled === true
+    ? <Grid container style={{ margin: "-2rem" }}>
+      <Grid item lg={10} xs={12}>
+        <div style={{ margin: "2rem" }}>
+          {children}
+        </div>
+      </Grid>
+      <Grid item lg={2} xs={12}>
+        <OnlineList />
+      </Grid>
     </Grid>
-    <Grid item lg={2} xs={12}>
-      <OnlineList />
-    </Grid>
-  </Grid>;
+    : <Grid>{children}</Grid>;
 };
 
 export default OnlineListWrapper;

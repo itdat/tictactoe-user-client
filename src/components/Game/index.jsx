@@ -4,28 +4,33 @@ import Board from "./Board";
 import History from "./History";
 import { calculateWinner } from "./services";
 import { ThemeContext } from "../../App";
+import { makeStyles } from "@material-ui/core/styles";
+import AuthContext from "../../context/auth/authContext";
 
-const Game = () => {
+const useStyles = makeStyles({
+  disabled: {
+    pointerEvents: 'none',
+    opacity: '0.55'
+  }
+});
+
+const Game = ({ history, controller, onChangeHistory }) => {
+  const classes = useStyles();
   const socket = useContext(ThemeContext);
+  const { user } = useContext(AuthContext);
+  const [name] = useState(user?.username ?? '');
 
   const gameSize = 10;
   const winSteps = 5;
-  const [history, setHistory] = useState([
-    {
-      squares: Array(100).fill(null),
-      winner: null,
-      winMoves: [],
-      move: null,
-    },
-  ]);
+
   const [stepNumber, setStepNumber] = useState(0);
-  const [xIsNext, setPlayer] = useState(true);
+  const [xIsNext, setPlayer] = useState(false);
   const [isAsc, setSort] = useState(false);
 
   useEffect(() => {
     socket.on('matchInfo', info => {
       console.log("info =", info);
-      setHistory(info.data.history);
+      onChangeHistory(info.data.history);
       setStepNumber(info.data.stepNumber);
       setPlayer(info.data.xIsNext);
     });
@@ -35,10 +40,14 @@ const Game = () => {
   const sendMatch = (match) => {
     console.log("postData =", match);
 
-    socket.emit('sendMatchInfo', match, () => {
-      setHistory(match.history);
-      setStepNumber(match.stepNumber);
-      setPlayer(match.xIsNext);
+    socket.emit('sendMatchInfo', match, (error) => {
+      if (error) {
+        console.log(error);
+      } else {
+        onChangeHistory(match.history);
+        setStepNumber(match.stepNumber);
+        setPlayer(match.xIsNext);
+      }
     });
   };
 
@@ -54,23 +63,10 @@ const Game = () => {
     const move = { x: i % gameSize, y: Math.floor(i / gameSize) };
     const winMoves = calculateWinner(newSquares, winSteps, i, player);
     const winner = winMoves.length !== 0 ? player : null;
-    // socket.emit("playerMove", i);
-    console.log("handleCellClick");
-
-    // const current = history.slice(0, stepNumber + 1).reverse()[0];
-    // const player = xIsNext ? "x" : "o";
-
     const droppedHistory = history.slice(0, stepNumber + 1);
-    // const newSquares = [...current.squares];
-    // if (current.winner || newSquares[i]) {
-    //   return;
-    // }
-    // newSquares[i] = player;
-    // const move = { x: i % gameSize, y: Math.floor(i / gameSize) };
-    // const winMoves = calculateWinner(newSquares, winSteps, i, player);
-    // const winner = winMoves.length !== 0 ? player : null;
 
     const match = {
+      controller,
       history: [
         ...droppedHistory,
         {
@@ -85,51 +81,7 @@ const Game = () => {
     }
 
     sendMatch(match);
-    // const droppedHistory = history.slice(0, stepNumber + 1);
-    // setHistory([
-    //   ...droppedHistory,
-    //   {
-    //     squares: newSquares,
-    //     winner,
-    //     winMoves,
-    //     move,
-    //   },
-    // ]);
-    // setStepNumber(droppedHistory.length);
-    // setPlayer(!xIsNext);
   };
-
-  // useEffect(() => {
-  //   socket.on("playerMove", (i) => {
-  //     const current = history.slice(0, stepNumber + 1).reverse()[0];
-  //     const player = xIsNext ? "x" : "o";
-  // 
-  //     const newSquares = [...current.squares];
-  //     if (current.winner || newSquares[i]) {
-  //       return;
-  //     }
-  //     newSquares[i] = player;
-  //     const move = { x: i % gameSize, y: Math.floor(i / gameSize) };
-  //     const winMoves = calculateWinner(newSquares, winSteps, i, player);
-  //     const winner = winMoves.length !== 0 ? player : null;
-  // 
-  //     const droppedHistory = history.slice(0, stepNumber + 1);
-  //     setHistory([
-  //       ...droppedHistory,
-  //       {
-  //         squares: newSquares,
-  //         winner,
-  //         winMoves,
-  //         move,
-  //       },
-  //     ]);
-  //     setStepNumber(droppedHistory.length);
-  //     setPlayer(!xIsNext);
-  //   });
-  //   return () => {
-  //     socket.off("playerMove");
-  //   };
-  // }, [socket, stepNumber, history, xIsNext]);
 
   const jumpTo = (step) => {
     if (step !== stepNumber) {
@@ -142,7 +94,12 @@ const Game = () => {
     setSort(!isAsc);
   };
 
+  // console.log("..history =", history);
+
+
   const current = { ...history[stepNumber] };
+  // console.log("..stepNumber =", stepNumber);
+  // console.log("..current =", current);
   const squares = [...current.squares];
   const checkedCells = squares.reduce(
     (count, square) => count + (square !== null ? 1 : 0),
@@ -177,7 +134,7 @@ const Game = () => {
               )
             }
           />
-          <div style={{pointerEvents: 'none', opacity: '0.55'}} id="game-wrapper">
+          <div id="game-wrapper" className={(controller && controller.name !== name) ? classes.disabled : null} >
             <Board
               winMoves={current.winMoves}
               squares={squares}

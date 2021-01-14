@@ -111,8 +111,9 @@ export default function Login({ history }) {
         password,
       });
       if (res.success) {
-        showMessage("You have successfully logged in. You will be redirected to homepage.");
-        setTimeout(() => history.push("/"), 4300);
+        showMessage("You have successfully logged in.");
+        // showMessage("You have successfully logged in. You will be redirected to homepage.");
+        // setTimeout(() => history.push("/"), 4300);
       } else {
         showMessage("Invalid Login Credentials");
       }
