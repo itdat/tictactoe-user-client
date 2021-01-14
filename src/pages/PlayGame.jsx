@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useHistory } from "react-router-dom";
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -18,6 +17,7 @@ import OnlineListWrapper from "../components/OnlineListWrapper";
 import Popups from "../components/Display/Popups";
 import { ThemeContext } from '../App';
 import AuthContext from "../context/auth/authContext";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -39,8 +39,8 @@ const PlayGame = () => {
     // Reload data 
     socket.emit('reloadRooms');
 
-    socket.on('roomList', ({ rooms }) => {
-      // console.log("[PlayGame] ..rooms =", rooms);
+    socket.on('getRooms', ({ rooms }) => {
+      console.log("[PlayGame] ..rooms =", rooms);
       setRoomItems(rooms);
     });
 
