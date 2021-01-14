@@ -38,7 +38,7 @@ const Room = ({ location }) => {
       messages,
     }
     console.log(controller);
-    console.log(testData);
+    // console.log(testData);
   }
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const Room = ({ location }) => {
       socket.emit('joinRoom', { name: name, roomId: room, roomName: roomName, roomLevel: level }, (user, room) => {
         if (room) {
           console.log("..roomInfo =", room)
-          setController(room.host);
+          // setController(room.host);
           setRoom(room.name);
           setLevel(room.level);
           setRoomInfo({ host: room.host, player2: room.player2 })
@@ -68,9 +68,6 @@ const Room = ({ location }) => {
     socket.on("roomData", ({ user, room }) => {
       if (room) {
         console.log("..roomInfo =", room)
-        // setController(room.host);
-        // setRoom(room.name);
-        // setLevel(room.level);
         setRoomInfo({ host: room.host, player2: room.player2 })
       }
     });
@@ -86,9 +83,9 @@ const Room = ({ location }) => {
       // console.log("..player2 =", roomInfo.player2);
       const newController = controller.name === roomInfo.host.name ? roomInfo.player2 : roomInfo.host;
 
-      console.log("..newController =", newController);
+      // console.log("..newController =", newController);
 
-      setController(newController);
+      // setController(newController);
     }
 
     if (item[item.length - 1].winner) {
@@ -102,7 +99,7 @@ const Room = ({ location }) => {
     }
   };
 
-  return (<OnlineListWrapper isToggled={true}>
+  return (<OnlineListWrapper isToggled={false}>
     {room ? (<Grid container>
       <Grid item lg={8} xs={12}>
         <Game history={history} controller={controller} onChangeHistory={onChangeHistory} />

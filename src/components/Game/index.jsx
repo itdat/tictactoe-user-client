@@ -134,7 +134,8 @@ const Game = ({ history, controller, onChangeHistory }) => {
               )
             }
           />
-          <div id="game-wrapper" className={(controller && controller.name !== name) ? classes.disabled : null} >
+        {/*   className={(controller && controller.name !== name) ? classes.disabled : null} */}
+          <div id="game-wrapper"  >
             <Board
               winMoves={current.winMoves}
               squares={squares}
