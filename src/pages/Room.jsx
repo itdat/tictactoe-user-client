@@ -19,7 +19,7 @@ const Room = ({ location }) => {
   const [messages, setMessages] = useState([]);
   const [history, setHistory] = useState([
     {
-      squares: Array(100).fill(null),
+      squares: Array(400).fill(null),
       winner: null,
       winMoves: [],
       move: null,
@@ -81,7 +81,7 @@ const Room = ({ location }) => {
       // console.log("..controller =", controller);
       // console.log("..host =", roomInfo.host);
       // console.log("..player2 =", roomInfo.player2);
-      const newController = controller.name === roomInfo.host.name ? roomInfo.player2 : roomInfo.host;
+      // const newController = controller.name === roomInfo.host.name ? roomInfo.player2 : roomInfo.host;
 
       // console.log("..newController =", newController);
 
