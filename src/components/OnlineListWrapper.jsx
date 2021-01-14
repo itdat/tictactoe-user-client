@@ -5,25 +5,51 @@ import { Grid } from "@material-ui/core";
 
 import OnlineList from "../components/OnlineList";
 import { ThemeContext } from '../App';
+import AuthContext from "../context/auth/authContext";
 
-const OnlineListWrapper = ({ children}) => {
+const OnlineListWrapper = ({ children, isToggled = true }) => {
+  const { user, isAuthenticated, error, clearErrors, loadUser } = useContext(AuthContext);
   const socket = useContext(ThemeContext)
 
   useEffect(() => {
-    // Reload data because Sidebar cause error if online list component is located in different pages
-    socket.emit('reloadOnlineUsers');
-  }, [socket])
+    loadUser();
+    // eslint-disable-next-line
+  }, []);
 
-  return <Grid container style={{ margin: "-2rem" }}>
-    <Grid item lg={10} xs={12}>
-      <div style={{ margin: "2rem" }}>
-        {children}
-      </div>
+  // Listen if user is authenticated
+  useEffect(() => {
+    if (isAuthenticated && user && user.username !== "") {
+      socket.emit('loadOnlineUser', { name: user.username }, (err) => {
+        if (err) {
+          // console.log(err);
+        }
+      });
+    }
+
+    if (error === "Invalid Credentials") {
+      // setAlert(error, "danger");
+      alert(error);
+      clearErrors();
+    }
+
+    // Reload data because Sidebar cause error if online list component is located in different pages
+    socket.emit('reloadOnlineList');
+
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, user]);
+
+  return isToggled === true
+    ? <Grid container style={{ margin: "-2rem" }}>
+      <Grid item lg={10} xs={12}>
+        <div style={{ margin: "2rem" }}>
+          {children}
+        </div>
+      </Grid>
+      <Grid item lg={2} xs={12}>
+        <OnlineList />
+      </Grid>
     </Grid>
-    <Grid item lg={2} xs={12}>
-      <OnlineList />
-    </Grid>
-  </Grid>;
+    : <Grid>{children}</Grid>;
 };
 
 export default OnlineListWrapper;

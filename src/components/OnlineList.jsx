@@ -36,7 +36,7 @@ const OnlineList = () => {
   const socket = useContext(ThemeContext)
 
   useEffect(() => {
-    socket.on("getOnlineUsers", ({ users }) => {
+    socket.on("onlineList", ({ users }) => {
       setUsers(users);
     });
   }, [socket])

@@ -8,6 +8,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import Tooltip from '@material-ui/core/Tooltip';
 import Avatar from '@material-ui/core/Avatar';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Rating from '@material-ui/lab/Rating';
@@ -119,16 +120,16 @@ export default function RoomListView({ rooms }) {
   const classes = useStyles();
   const history = useHistory();
 
-  const goToRoom = (name, room, level) => {
-    history.push(`/room?name=${name}&room=${room}&level=${level}`);
+  const goToRoom = (name, room, roomName, level) => {
+    history.push(`/room?name=${name}&room=${room}&roomName=${roomName}&level=${level}`);
   };
 
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        {rooms.map(({ gamers, id, level, name, participants, status }) => (
-          <Grid item xs={4} spacing={3} key={uuid()}>
-            <Container className={classes.cardItem}>
+        {rooms.filter((room) => room.status !== "quickly").map(({ id, level, name, host, player2, guests, status }) => (
+          <Grid item xs={4} key={uuid()}>
+            <Container spacing={3} className={classes.cardItem}>
               <Grid item>
                 <ButtonBase
                   focusRipple
@@ -139,7 +140,7 @@ export default function RoomListView({ rooms }) {
                     width: "100%",
                   }}
                   onClick={() => {
-                    goToRoom(username, name, level)
+                    goToRoom(username, id, name, level)
                   }}
                 >
                   <span
@@ -179,16 +180,20 @@ export default function RoomListView({ rooms }) {
                 {status === 'waiting'
                   ? (<Grid item>
                     <div className={classes.flexGrid}>
-                      <Avatar alt="gamer 01" src="" ></Avatar>
+                      <Tooltip title={host?.name || ''}>
+                        <Avatar alt="gamer 01" src="" ></Avatar>
+                      </Tooltip>
                       <Typography variant="body2">
-                        Gamer#01
+                        Player 01
                       </Typography>
                     </div>
                   </Grid>)
                   : (<Grid item>
                     <AvatarGroup max={4}>
-                      {[...Array(participants)].map((e, i) => (
-                        <Avatar key={i} alt="" src="" />
+                      {[host, player2, ...guests].map(({ name }, i) => (
+                        <Tooltip title={name}>
+                          <Avatar key={i} alt="avatar" src=""></Avatar>
+                        </Tooltip>
                       ))}
                     </AvatarGroup>
                   </Grid>)}

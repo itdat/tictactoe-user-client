@@ -13,6 +13,7 @@ import 'reactjs-popup/dist/index.css';
 import RoomSearchHeader from "../components/PlayGame/RoomSearchHeader";
 import GameRoomListView from "../components/PlayGame/RoomListView";
 import RoomCreateModal from "../components/PlayGame/RoomCreateModal"
+import RoomJoinModal from "../components/PlayGame/RoomJoinModal"
 import OnlineListWrapper from "../components/OnlineListWrapper";
 import Popups from "../components/Display/Popups";
 import { ThemeContext } from '../App';
@@ -27,26 +28,37 @@ const useStyles = makeStyles(() => ({
 const PlayGame = () => {
   const { user } = useContext(AuthContext);
   const [name] = useState(user?.username ?? '');
-  
-  const classes = useStyles();
   const history = useHistory();
+
+  const classes = useStyles();
 
   const socket = useContext(ThemeContext);
   const [roomItems, setRoomItems] = useState([]);
 
   useEffect(() => {
-    // console.log("useEffect running");
     // Reload data 
     socket.emit('reloadRooms');
 
-    socket.on('getRooms', ({ rooms }) => {
-      // console.log("getRooms", rooms);
+    socket.on('roomList', ({ rooms }) => {
+      // console.log("[PlayGame] ..rooms =", rooms);
       setRoomItems(rooms);
-    })
+    });
+
+    socket.on('quickRoom', ({ room }) => {
+      console.log("[PlayGame] ..quickRoom =", room);
+      if (room.host && room.player2) {
+        history.push(`/room?name=${name}&room=${room.id}&roomName=${room.name}&level=${room.level}`);
+      }
+    });
+  // eslint-disable-next-line
   }, [socket]);
 
-  const goToRoom = (name, room, level) => {
-    history.push(`/room?name=${name}&room=${room}&level=${level}`);
+  const goToRoom = (name, room, roomName, level) => {
+    history.push(`/room?name=${name}&room=${room}&roomName=${roomName}&level=${level}`);
+  };
+
+  const goToQuickGame = () => {
+    socket.emit('requestQuickGame');
   };
 
   return <Fragment>
@@ -59,16 +71,41 @@ const PlayGame = () => {
         alignItems="center"
         style={{ marginTop: "25px" }}
       >
-        <RoomSearchHeader />
-        <Popup
-          modal
-          lockScroll={true}
-          nested
-          trigger={<Button variant="contained" color="primary"> Create room </Button>}>
-          {close => name && name !== ''
-            ? (<RoomCreateModal close={close} onClick={goToRoom} />)
-            : (Popups.Information("Please login!", close = { close }))}
-        </Popup>
+        <Grid item>
+          <RoomSearchHeader />
+        </Grid>
+
+        <Grid item xs={12} sm container justify="flex-end">
+          <Button variant="contained" color="secondary" onClick={goToQuickGame}>QUICK GAME</Button>
+          <Popup
+            modal
+            lockScroll={true}
+            nested
+            trigger={<Button
+              variant="contained"
+              color="secondary"
+              style={{ marginLeft: "12px" }}>
+              Join with CODE
+                      </Button>}>
+            {close => name && name !== ''
+              ? (<RoomJoinModal close={close} onClick={goToRoom} />)
+              : (Popups.Information("Please login!", close = { close }))}
+          </Popup>
+          <Popup
+            modal
+            lockScroll={true}
+            nested
+            trigger={<Button
+              variant="contained"
+              color="primary"
+              style={{ marginLeft: "12px" }}>
+              Create room
+                      </Button>}>
+            {close => name && name !== ''
+              ? (<RoomCreateModal close={close} onClick={goToRoom} />)
+              : (Popups.Information("Please login!", close = { close }))}
+          </Popup>
+        </Grid>
       </Grid>
       {roomItems && roomItems.length !== 0
         ? (<Card className={classes.card} style={{ marginTop: "15px" }}>
@@ -76,7 +113,7 @@ const PlayGame = () => {
             <GameRoomListView rooms={roomItems} />
           </CardContent>
         </Card>)
-        : <h5 style={{ marginTop: "50px" }}>There are no game rooms at this time.</h5>}
+        : <h5 style={{ marginTop: "50px" }}>There are no result.</h5>}
     </OnlineListWrapper>
   </Fragment>;
 };

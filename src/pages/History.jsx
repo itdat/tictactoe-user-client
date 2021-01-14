@@ -54,13 +54,19 @@ const History = () => {
   const [name] = useState(user?.username ?? '');
 
   const classes = useStyles();
-  //const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState([]);
   const history = useHistory();
   //const username = "nvh";
 
   const handleRowClick = (e) => {
     history.push("/room");
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    const res = await axios(`http://localhost:4000/users/history/${name}`);
+    console.log(res.data);
+    setRows([...res.data]);
+  }, [rows.id, name]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   // useEffect(async () => {

@@ -60,11 +60,15 @@ const AuthState = (props) => {
       });
 
       loadUser();
+      
+      return { success: true };
     } catch (err) {
       dispatch({
         type: REGISTER_FAIL,
         payload: err.response.data.msg,
       });
+
+      return { success: false };
     }
   };
 
@@ -89,12 +93,14 @@ const AuthState = (props) => {
       });
 
       loadUser();
+      return { success: true };
     } catch (err) {
       dispatch({
         type: LOGIN_FAIL,
         payload: err.response.data.msg,
       });
     }
+    return { success: false };
   };
 
   // Get data using o-auth

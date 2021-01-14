@@ -1,6 +1,15 @@
 import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+  disabled: {
+    pointerEvents: 'none',
+    opacity: '0.55'
+  }
+});
 
 const History = ({ isAsc, stepNumber, history, switchSortOption, jumpTo }) => {
+  const classes = useStyles();
   const historyCopy = isAsc ? [...history] : [...history].reverse();
 
   const moves = historyCopy.map((record, i) => {
@@ -22,7 +31,7 @@ const History = ({ isAsc, stepNumber, history, switchSortOption, jumpTo }) => {
   });
 
   return (
-    <div id="info">
+    <div id="info" className={classes.disabled}>
       <button className="btn sort-toggle btn-primary" onClick={switchSortOption}>
         {isAsc ? "Ascending" : "Descending"}
       </button>

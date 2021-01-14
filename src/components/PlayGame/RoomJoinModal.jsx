@@ -2,17 +2,14 @@ import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import VideogameAsset from "@material-ui/icons/VideogameAsset";
-import Rating from '@material-ui/lab/Rating';
 import {
   Avatar,
   Button,
   CssBaseline,
   TextField,
-  Grid,
   Typography,
 } from "@material-ui/core";
 
-import { ThemeContext } from '../../App';
 import "./css/styles.css";
 import AuthContext from "../../context/auth/authContext";
 
@@ -41,14 +38,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RoomCreateModal = ({ close, onClick }) => {
+const RoomJoinModal = ({ close, onClick }) => {
   const { user } = useContext(AuthContext);
   const [name] = useState(user?.username ?? '');
 
   const classes = useStyles();
-  const socket = useContext(ThemeContext)
 
-  const [formData, setFormData] = useState({ room: socket.id, level: 3 });
+  const [formData, setFormData] = useState();
 
   const handleInputChange = (e) => {
     if (e.target.name === 'level') {
@@ -69,47 +65,21 @@ const RoomCreateModal = ({ close, onClick }) => {
           <VideogameAsset />
         </Avatar>
         <Typography component="h1" variant="h5" className={classes.inputField}>
-          Create Room
+          Join Room
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
-            disabled
             variant="outlined"
             className={classes.inputField}
             required
             fullWidth
             id="room"
             label="CODE"
-            value={formData.room}
             onChange={handleInputChange}
             name="room"
             autoComplete="room"
             autoFocus
           />
-          <TextField
-            variant="outlined"
-            className={classes.inputField}
-            required
-            fullWidth
-            id="roomName"
-            onChange={handleInputChange}
-            label="Name"
-            name="roomName"
-            autoComplete="roomName"
-            autoFocus
-          />
-          <Grid container xs={3} sm item className={classes.inputField}>
-            <Grid item style={{ marginRight: ".75rem" }}>
-              <Typography component="legend">Difficulty level </Typography>
-            </Grid>
-            <Grid item>
-              <Rating
-                value={formData.level}
-                name="level"
-                onChange={handleInputChange}
-              />
-            </Grid>
-          </Grid>
           <Button
             type="submit"
             fullWidth
@@ -119,12 +89,12 @@ const RoomCreateModal = ({ close, onClick }) => {
             onClick={(e) => {
               e.preventDefault();
               
-              const { room, roomName, level} = formData;
-              onClick(name, room, roomName, level);
+              const { room } = formData;
+              onClick(name, room);
               close();
             }}
           >
-            Create
+            Join
           </Button>
         </form>
       </div>
@@ -132,4 +102,4 @@ const RoomCreateModal = ({ close, onClick }) => {
   </div>;
 }
 
-export default RoomCreateModal;
+export default RoomJoinModal;

@@ -1,15 +1,37 @@
-import React, { useState, useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import AuthContext from "../context/auth/authContext";
 
-import OnlineListWrapper from "../components/OnlineListWrapper";
+import OnlineList from "../components/OnlineList";
+import { ThemeContext } from "../App";
+import { Grid } from "@material-ui/core";
 
-const Logout = () => {  
-  const { user } = useContext(AuthContext);
+const Logout = () => {
+  const { user, logout } = useContext(AuthContext);
+  const socket = useContext(ThemeContext);
 
+  useEffect(() => {
+    if (user && socket) {
+      socket.emit('removeOnlineUser', { name: user.username });
+    }
 
-  return <OnlineListWrapper>
-    {user ? (<h1>Logout</h1>) : (<h6>You have been logged out from system.</h6>)}
-  </OnlineListWrapper>;
+    logout();
+
+    // Reload data because Sidebar cause error if online list component is located in different pages
+    socket.emit('reloadOnlineList');
+    
+    // eslint-disable-next-line
+  }, [socket]);
+
+  return <Grid container style={{ margin: "-2rem" }}>
+    <Grid item lg={10} xs={12}>
+      <div style={{ margin: "2rem" }}>
+        {user ? (<h1>Logout</h1>) : (<h6>You have been logged out..</h6>)}
+      </div>
+    </Grid>
+    <Grid item lg={2} xs={12}>
+      <OnlineList />
+    </Grid>
+  </Grid>;
 };
 
 export default Logout;

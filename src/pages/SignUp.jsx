@@ -11,11 +11,11 @@ import {
   Container,
 } from "@material-ui/core/";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 
 import AuthContext from "../context/auth/authContext";
-import { ThemeContext } from "../App";
 import OnlineListWrapper from "../components/OnlineListWrapper";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,15 +45,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp({ history }) {
   const classes = useStyles();
-  const socket = useContext(ThemeContext);
 
   // Use auth context
   const authContext = useContext(AuthContext);
   const {
-    loginOAuth,
+    loadUser,
     register,
     error,
-    clearErrors,
     isAuthenticated,
   } = authContext;
 
@@ -67,25 +65,18 @@ export default function SignUp({ history }) {
   // Get form data
   const { fullname, username, password } = formData;
 
-  // Listen if user is authenticated
-  useEffect(() => {
-    if (isAuthenticated) {
-      socket.emit("setStatus", { name: username, status: 1 }, (error) => {
-        if (error) {
-          alert(error);
-        } else {
-          history.push("/");
-        }
-      });
-    }
+  // Show toast
+  const [message, setMessage] = useState({ open: false, text: "" });
 
-    if (error) {
-      alert(error);
-      // setAlert(error);
-      clearErrors();
+  useEffect(() => {
+    loadUser();
+    if (isAuthenticated) {
+      if (message.text === "") {
+        showMessage("You are already logged in, you need to log out before registering for an account.");
+      }
     }
     // eslint-disable-next-line
-  }, [error, isAuthenticated, history]);
+  }, [isAuthenticated, error]);
 
   // Handle input change
   const handleInputChange = (e) => {
@@ -95,11 +86,32 @@ export default function SignUp({ history }) {
   // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    register({
+
+    const res = register({
       fullname,
       username,
       password,
     });
+
+    if (res.success) {
+      showMessage("You have been successfully registerd.\nYou will be automatically login!");
+    } else {
+      showMessage("Invalid registration!");
+    }
+  };
+
+  // Show toast
+  const showMessage = (msg) => {
+    setMessage({ open: true, text: msg });
+
+    setTimeout(() => {
+      handleClose();
+    }, 4000)
+  };
+
+  // Close toast
+  const handleClose = () => {
+    setMessage({ open: false, text: "" });
   };
 
   return (
@@ -181,7 +193,15 @@ export default function SignUp({ history }) {
               </Grid>
             </Grid>
           </form>
+
         </div>
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={message.open}
+          onClose={handleClose}
+          message={message.text}
+          key='signup_toast'
+        />
       </Container>
     </OnlineListWrapper>
   );
